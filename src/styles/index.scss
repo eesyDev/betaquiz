@@ -1,0 +1,247 @@
+
+@import 'calendar.scss';
+* {
+    box-sizing: border-box;
+    font-family: 'Futura';
+    font-weight: 400;
+
+}
+:root {
+    --lilac: #B39DDB;
+    --violet: #673AB7;
+    --light-yellow: #FFF7EB;
+    --yellow: #FDB954;
+}
+
+body {
+    font-family: 'Futura';
+    font-weight: 400;
+    margin: 0;
+    padding: 0;
+    background-color: #EEF2F6;
+}
+
+a {
+    color: inherit;
+    text-decoration: none;
+    transition: all .2s ease-in-out;
+}
+
+ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+input {
+    height: 60px;
+    border-radius: 10px;
+    border: 1px solid rgba(0,0,0,.4);
+    padding-left: 20px;
+    &::placeholder {
+        color: rgba(0,0,0,.4);
+        font-weight: 500;
+    }
+}
+
+img, svg {
+    max-width: 100%;
+}
+
+.btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 60px;
+    border: none;
+    outline: none;
+    font-size: 17px;
+    border-radius: 10px;
+    padding: 0 20px;
+    transition: all .2s ease-in-out;
+    cursor: pointer;
+}
+.btn--primary {
+    background-color: #000;
+    color: #fff;
+    &:hover {
+        background-color: rgba(0,0,0,.8);
+    }
+}
+
+h1, .h1 {
+    font-size: 50px;
+    font-weight: 500;
+    margin: 0;
+}
+
+h2, .h2 {
+    font-size: 40px;
+    font-weight: 500;
+    margin: 0;
+}
+.content {
+    display: flex;
+}
+.container {
+    width: 100%;
+}
+
+.wrapper {
+    display: flex;
+}
+.text-sm {
+    font-size: 13px;
+    font-weight: 400;
+}
+
+.header {
+    background-color: #fff;
+    width: 100%;
+    padding: 20px;
+    .wrapper {
+        justify-content: space-between;
+    }
+    &__date {
+        background-color: var(--light-yellow);
+        border-radius: 10px;
+        padding: 0 20px;
+        height: 50px;
+        display: flex;
+        align-items: center;
+        width: fit-content;
+        gap: 10px;
+        cursor: pointer;
+        &-icon {
+            color: var(--yellow);
+            font-size: 24px;
+        }
+    }
+    &__user {
+        background-color: #E3F2FD;
+        border-radius: 10px;
+        padding: 0 20px;
+        height: 50px;
+        cursor: pointer;
+        > div {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            height: 100%;
+        }
+    }
+}
+
+.login {
+    height: 100vh;
+    .h1 {
+        text-align: center;
+    }
+    .form-wrapper {
+        margin-top: 30px;
+
+    }
+
+    &__form {
+        width: 50%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        .form {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            width: 400px;
+            margin-top: 10px;
+        }
+    }
+    &__illustration {
+        width: 50%;
+        background-color: #6EABCD;
+        padding-top: 100px;
+        &-txt {
+            padding: 0 50px;
+            margin-bottom: 50px;
+        }
+    }
+    .text-sm {
+        text-align: left;
+        display: flex;
+        &.gray {
+            color: #7c7c7c;
+            margin-top: 10px;
+        }
+        a {
+            color: #000;
+            font-weight: 500;
+            text-decoration: underline;
+            margin-left: 5px;
+        }
+    }
+}
+
+.sidebar {
+    width: 260px;
+    padding: 20px 15px 50px;
+    background-color: #fff;
+    height: 100vh;
+    &__top {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+    .burger {
+        width: 35px;
+        height: 35px;
+        background-color: var(--lilac);
+        border-radius: 8px;
+        color: #673AB7;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        svg {
+            width: 24px;
+            height: 24px;
+        }
+    }
+    &__body {
+        margin-top: 50px;
+        &-menu {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            li {
+                padding: 12px;
+                transition: all .2s ease-in-out;
+                border-radius: 10px;
+                a {
+                    display: flex;
+                    align-items: center;
+                    gap: 15px;
+                    svg {
+                        font-size: 20px;
+                    }
+                    
+                }
+                &:hover {
+                    background-color: #efefef;
+                }
+            }
+        }
+    }
+}
+.classes {
+    .h1 {
+        margin-top: 50px;
+    }
+}
+
+.schedule-control-section {
+    display: flex;
+    padding-left: 20px;
+    padding-right: 20px;
+    margin-top: 20px;
+    .control-section {
+    }
+}
