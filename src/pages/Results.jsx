@@ -1,8 +1,16 @@
-import React from 'react'
+import React from 'react';
+import { Header, Sidebar } from '../components';
 
-const Results = () => {
+
+const Results = ({isOpen}) => {
   return (
-    <div>Results</div>
+    <div className={isOpen ? 'content with-sidebar results' : 'content with-sidebar results m-less'}>
+      <Sidebar/>
+      <div className="container">
+        <Header/>
+        res
+      </div>
+    </div>
   )
 }
 

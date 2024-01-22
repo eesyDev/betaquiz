@@ -1,8 +1,16 @@
-import React from 'react'
+import React from 'react';
+import { Header, Sidebar } from '../components';
 
-const Groups = () => {
+
+const Groups = ({isOpen}) => {
   return (
-    <div>Groups</div>
+    <div className={isOpen ? 'content with-sidebar groups' : 'content with-sidebar groups m-less'}>
+      <Sidebar/>
+      <div className="container">
+        <Header/>
+        Groups
+      </div>
+    </div>
   )
 }
 

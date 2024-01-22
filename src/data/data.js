@@ -1,3 +1,6 @@
+import mathIcon from '../img/math_icon.svg';
+import geometryIcon from '../img/geom.svg';
+import chemistryIcon from '../img/chem.svg';
 export const scheduleData = [
     {
       Id: 1,
@@ -160,3 +163,42 @@ export const scheduleData = [
       CategoryColor: '#ea7a57',
     }
   ];
+
+export const quizesData = [
+  {
+    grade: 'Легкий',
+    author: 'magzhan111',
+    createdAt: '22.06.2023',
+    subject: 'Математика',
+    theme: 'Сложные дроби',
+    group: 'ALA_E_4KOB_Z2',
+    icon: mathIcon
+  },
+  {
+    grade: 'Средний',
+    author: 'magzhan111',
+    createdAt: '22.06.2023',
+    subject: 'Химия',
+    theme: 'Кислоты',
+    group: 'ALA_E_4KOB_Z2',
+    icon: chemistryIcon
+  },
+  {
+    grade: 'Сложный',
+    author: 'magzhan111',
+    createdAt: '22.06.2023',
+    subject: 'Геометрия',
+    theme: 'Треугольники',
+    group: 'ALA_E_4KOB_Z2',
+    icon: geometryIcon
+  },
+  {
+    grade: 'Сложный',
+    author: 'magzhan111',
+    createdAt: '22.06.2023',
+    subject: 'Биология',
+    theme: 'Треугольники',
+    group: 'ALA_E_4KOB_Z2',
+    icon: geometryIcon
+  },
+]
