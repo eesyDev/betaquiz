@@ -1,4 +1,6 @@
 import React, { useState } from 'react';
+import { BsPencilSquare } from "react-icons/bs";
+import { Link } from 'react-router-dom';
 
 import { Header, Sidebar, QuizCard } from '../components';
 import { quizesData } from '../data/data';
@@ -24,7 +26,6 @@ const Quizes = ({ isOpen }) => {
 		});
 		setFilteredQuizes(newFilteredQuizes);
 	  };
-	  console.log(filteredQuizes)
 	
   return (
     <div className={isOpen ? 'content with-sidebar quizes' : 'content with-sidebar quizes m-less'}>
@@ -76,6 +77,9 @@ const Quizes = ({ isOpen }) => {
               ))
             }
           </div>
+		  <Link to='/create-quiz' className="create-quiz">
+			<BsPencilSquare/>
+		  </Link>
         </div>
       </div>
     </div>

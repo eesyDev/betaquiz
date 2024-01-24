@@ -5,12 +5,14 @@ import { IoBookOutline } from "react-icons/io5";
 import { GrGroup } from "react-icons/gr";
 import { LuClipboardList } from "react-icons/lu";
 import { MdOutlineQuiz } from "react-icons/md";
+import { AiOutlineQuestionCircle } from "react-icons/ai";
+import { IoMdAddCircleOutline } from "react-icons/io";
 
 import logo from '../img/logo.svg';
 import logoCollapsed from '../img/BQ.svg';
 
 
-const Sidebar = () => {
+const Sidebar = ({ isAddingQuiz }) => {
   const isOpen = useSelector((state) => state.burger.isOpen);
 
   const activeLink = 'active';
@@ -20,7 +22,7 @@ const Sidebar = () => {
     <div className={isOpen ? 'sidebar' : 'sidebar collapsed'}>
       <div className="sidebar__top">
         <div className="logo">
-          <img src={isOpen ? logo : logoCollapsed}/>
+          <Link to='/'><img src={isOpen ? logo : logoCollapsed}/></Link>
         </div>
       </div>
       <div className="sidebar__body">
@@ -47,6 +49,18 @@ const Sidebar = () => {
             <span className={isOpen ? '' : 'collapsed'}>Quizes</span>
           </NavLink>
         </div>
+        { isAddingQuiz && 
+          <div className="sidebar__quiz-btns">
+            <button className="btn btn--red">
+              <AiOutlineQuestionCircle/>
+              { isOpen ? <span>Добавить вопрос</span> : ''}
+            </button>
+            <button className="btn btn--green">
+              <IoMdAddCircleOutline/>
+              { isOpen ? <span>Опубликовать квиз</span> : ''}
+            </button>
+          </div>
+        }
       </div>
     </div>
   )
