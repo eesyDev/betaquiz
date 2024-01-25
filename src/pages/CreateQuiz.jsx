@@ -32,41 +32,6 @@ const CreateQuiz = ({ isOpen }) => {
                 <button onClick={() => clear()}>Clear</button>
                 <p>Latex produced : {value1}</p>
             </div>
-            <div>
-                <p style={{ fontSize: "2rem" }}>Input with no additional keys :</p>
-                <MathInput
-                divisionFormat="obelus"
-                numericToolbarKeys={[]}
-                setValue={setValue2}
-                />
-                <p>Latex produced : {value2}</p>
-            </div>
-            <div>
-                <p style={{ fontSize: "2rem" }}>Input with custom keys :</p>
-                <MathInput
-                setValue={setValue3}
-                numericToolbarKeys={[
-                    "euro",
-                    {
-                    id: "custom",
-                    label: "wow",
-                    labelType: "raw",
-                    mathfieldInstructions: {
-                        content:
-                        "\\frac{\\int_a^b 2\\pi e^{2ix}\\cos(\\theta) \\gamma}{\\sum_2^9 i^2 - 1}",
-                        method: "write"
-                    }
-                    },
-                    {
-                    id: "customLogic",
-                    label: "custom logic",
-                    labelType: "raw",
-                    onClick: () => alert("Clicked!")
-                    }
-                ]}
-                />
-                <p>Latex produced : {value3}</p>
-            </div>
             </div>
             </div>
         </div>
