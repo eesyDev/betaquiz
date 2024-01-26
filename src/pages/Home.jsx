@@ -1,11 +1,12 @@
 import React from 'react';
 import { Header, Sidebar } from '../components';
-import { useGetStudentsQuery } from '../services/studentsApi';
+import { useGetTeachersQuery } from '../services/teacherApi';
+
 
 const Home = ({isOpen}) => {
-  const studentsArr = useGetStudentsQuery();
+  const teacersData = useGetTeachersQuery();
 
-  console.log(studentsArr)
+  console.log(teacersData)
   return (
     <div className={isOpen ? 'content with-sidebar home' : 'content with-sidebar home m-less'}>
       <Sidebar />
