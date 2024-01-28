@@ -6,7 +6,7 @@ import { useGetTeachersQuery } from '../services/teacherApi';
 const Home = ({isOpen}) => {
   const teacersData = useGetTeachersQuery();
 
-  console.log(teacersData)
+  // console.log(teacersData)
   return (
     <div className={isOpen ? 'content with-sidebar home' : 'content with-sidebar home m-less'}>
       <Sidebar />

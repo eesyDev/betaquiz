@@ -1,32 +1,56 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { ScheduleComponent, ViewsDirective, ViewDirective, Week, WorkWeek, Month, TimelineViews, TimelineMonth, Inject, Resize, DragAndDrop, Agenda, Day } from '@syncfusion/ej2-react-schedule';
 import { Link } from 'react-router-dom';
-import { applyCategoryColor } from '../data/helper';
+import { useGetLessonsQuery, useGetTeacherLessonsQuery } from '../services/lessonsApi';
+import { useGetTeacherGroupsQuery } from '../services/teacherGroupApi';
 
-import { extend } from '@syncfusion/ej2-base';
-import { DropDownListComponent } from '@syncfusion/ej2-react-dropdowns';
-import { PropertyPane } from '../data/property-pane';
-
+import { Header, Sidebar, Calendar } from '../components';
 import { scheduleData } from '../data/data';
 
-import { Header, Sidebar } from '../components';
-/*
- * Schedule Work days sample
- */
+
 const Classes = ({isOpen, isCalendarOpen}) => {
-	const [scheduleObj, setScheduleObj] = useState();
+	const [lessons, setlessons] = useState([]);
+	const [groups, setGroups] = useState([]);
+
+	const reqData = {status: 0}
+	const { data: lessonsData } = useGetTeacherLessonsQuery(reqData);
+	const { data: groupsData } = useGetTeacherGroupsQuery();
+	
+  
+	useEffect(() => {
+	  if (groupsData) {
+		setGroups(groupsData?.items);
+	  }
+	}, [groupsData]);
+
+	useEffect(() => {
+		if (lessonsData) {
+			setlessons(lessonsData?.items)
+		}
+	}, [lessonsData]);
+
+	const linkClassesWithGroups = (lessons, groups) => {
+		return lessons.map(cls => {
+		  const linkedGroups = (cls.group_ids || []).map(groupId => {
+			const group = groups.find(group => group.id === groupId);
+			return group ? { id: group.id, name: group.name } : null;
+		  }).filter(Boolean);
+	  
+		  return {
+			...cls,
+			groups: linkedGroups,
+		  };
+		});
+	  };
+	const classesWithGroups = linkClassesWithGroups(lessons, groups);
+	  
+	const events = lessons.map(lesson => ({
+		Subject: lesson.topic,
+		StartTime: new Date(lesson.time_from),
+		EndTime: new Date(lesson.time_to)
+	  }));
 
 	const isCalendar = isCalendarOpen;
 
-	const change = (args) => {
-	  scheduleObj.selectedDate = args.value;
-	  scheduleObj.dataBind();
-	};
-  
-	const onDragStart = (arg) => {
-	  // eslint-disable-next-line no-param-reassign
-	  arg.navigation.enable = true;
-	};
 
     return (
 		<div className={isOpen ? 'content with-sidebar classes' : 'content with-sidebar classes m-less'}>
@@ -37,24 +61,7 @@ const Classes = ({isOpen, isCalendarOpen}) => {
 					<h1 className="h1">Уроки</h1>
 					{
 					isCalendar ? 
-						<div className='schedule-control-section'>
-							<div className='control-section'>
-								<div className='control-wrapper'>
-								<ScheduleComponent
-									height="650px"
-									ref={(schedule) => setScheduleObj(schedule)}
-									selectedDate={new Date(2024, 0, 10)}
-									eventSettings={{ dataSource: scheduleData }}
-									dragStart={onDragStart}
-								>
-									<ViewsDirective>
-									{ ['Day', 'Week', 'Month', 'Agenda'].map((item) => <ViewDirective key={item} option={item} />)}
-									</ViewsDirective>
-									<Inject services={[Day, Week, Month, Agenda, Resize, DragAndDrop]} />
-								</ScheduleComponent>
-								</div>
-							</div>
-						</div> :
+						<Calendar scheduleData={events}/> :
 						<div className='lessons'>
 							<ul className="lessons__list">
 								<li className="lessons__list-title">
@@ -63,38 +70,31 @@ const Classes = ({isOpen, isCalendarOpen}) => {
 									<span className="group">Группа</span>
 									<span className="class">Урок</span>
 								</li>
-								<li className="lessons__list-item">
-									<Link to='/classes/math'>
-										<span className="date">30.05.2023</span>
-										<span className="time">08:45 — 10:15</span>
-										<span className="group">ALA_M_6KOY_A(5)</span>
-										<span className="class">Математика</span>
-									</Link>
-								</li>
-								<li className="lessons__list-item">
-									<Link to='/classes/math'>
-										<span className="date">30.05.2023</span>
-										<span className="time">08:45 — 10:15</span>
-										<span className="group">ALA_M_6KOY_A(5)</span>
-										<span className="class">Математика</span>
-									</Link>
-								</li>
-								<li className="lessons__list-item">
-									<Link to='/classes/math'>
-										<span className="date">30.05.2023</span>
-										<span className="time">08:45 — 10:15</span>
-										<span className="group">ALA_M_6KOY_A(5)</span>
-										<span className="class">Математика</span>
-									</Link>
-								</li>
-								<li className="lessons__list-item">
-									<Link to='/classes/math'>
-										<span className="date">30.05.2023</span>
-										<span className="time">08:45 — 10:15</span>
-										<span className="group">ALA_M_6KOY_A(5)</span>
-										<span className="class">Математика</span>
-									</Link>
-								</li>
+								{
+									classesWithGroups?.map((lesson, index) => {
+										const timeFromDate = new Date(lesson?.time_from);
+										const timeToDate = new Date(lesson?.time_to);
+										const hoursFrom = timeFromDate.getHours();
+										const minutesFrom = timeFromDate.getMinutes();
+										const hoursTo = timeToDate.getHours();
+										const minutesTo = timeToDate.getMinutes();
+
+										const formattedDateFrom = `${timeFromDate.getDate() < 10 ? '0' : ''}${timeFromDate.getDate()}-${(timeFromDate.getMonth() + 1) < 10 ? '0' : ''}${timeFromDate.getMonth() + 1}-${timeFromDate.getFullYear()}`;
+
+										const formattedTimeFromTo = `${hoursFrom < 10 ? '0' : ''}${hoursFrom}:${minutesFrom < 10 ? '0' : ''}${minutesFrom } - ${hoursTo < 10 ? '0' : ''}${hoursTo}:${minutesTo < 10 ? '0' : ''}${minutesTo}`;
+										return (
+											<li className="lessons__list-item" key={index}>
+												<Link to='/classes/math'>
+													<span className="date">{formattedDateFrom}</span>
+													<span className="time">{formattedTimeFromTo}</span>
+													<span className="group">{lesson?.groups[0]?.name}</span>
+													<span className="class">{lesson?.topic}</span>
+												</Link>
+											</li>
+										)
+									})
+								}
+								
 							</ul>
 						</div>
 					}

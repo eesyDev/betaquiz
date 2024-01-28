@@ -1,18 +1,28 @@
-import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
+import { createApi } from '@reduxjs/toolkit/query/react';
+import baseQuery from './baseQuery';
 
-const createRequest = (url, method, data) => ({ 
-    url, method, body: data
+const createRequest = (url, method) => ({ 
+    url, method
  });
 
 
-export const postApi = createApi({
+export const studentsApi = createApi({
     reducerPath: 'studentsApi',
-    baseQuery: fetchBaseQuery({baseUrl: process.env.BASE_URL}),
+    baseQuery,
     endpoints: (builder) => ({
         getStudents: builder.query({
-            query: () => createRequest('/students/student')
+            query: () => {
+                const request = createRequest('/students/student', 'GET');
+                return request;
+            },
+        }),
+        getGroupsIds: builder.query({
+            query: () => {
+                const request = createRequest('/students/student', 'GET');
+                return request;
+            },
         }),
     })
 });
 
-export const { useGetStudentsQuery } = postApi;
+export const { useGetStudentsQuery } = studentsApi;

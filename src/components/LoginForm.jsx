@@ -1,14 +1,17 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
 import { useForm } from 'react-hook-form';
 import TextField from '@mui/material/TextField';
 
 import { useLoginMutation } from '../services/authApi';
+import { setAuthState } from '../redux/slices/authSlice';
 
 
 const LoginForm = ({ formType, setFormType }) => {
 
     const navigate = useNavigate();
+    const dispatch = useDispatch();
 
     const [ login ] = useLoginMutation();
     
@@ -32,6 +35,7 @@ const LoginForm = ({ formType, setFormType }) => {
 
         if (response.data.token ) {
             window.localStorage.setItem('token', `Token ${response.data.token}`);
+            dispatch(setAuthState({ isLoggedIn: true, token: { ...response.data.token } }));
 
           } else {
             return alert('Login failed')

@@ -1,5 +1,6 @@
 import React from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { Link } from 'react-router-dom';
 import { LuCalendarDays } from "react-icons/lu";
 import { FiLogOut } from "react-icons/fi";
 import { FiLogIn } from "react-icons/fi";
@@ -8,9 +9,12 @@ import { MdOutlineCancel } from "react-icons/md";
 
 import { toggleBurger } from '../redux/slices/burgerSlice';
 import { toggleCalendar } from '../redux/slices/calendarSlice';
+import { logout } from '../redux/slices/authSlice';
+
 
 const Header = () => {
-	const isLoggedIn = true;
+	const isLoggedIn = useSelector((state) => state.authSlice.isLoggedIn);
+
 	const dispatch = useDispatch();
 
 	const handleClick = () => {
@@ -19,6 +23,18 @@ const Header = () => {
 	const handleCalendarClick = () => {
 		dispatch(toggleCalendar());
 	}
+
+	const onClickLogout = async () => {
+		try {
+		  if (window.confirm('Вы уверены что хотите выйти?')) {
+			dispatch(logout());
+			window.localStorage.removeItem('token')
+		  }
+		} catch (err) {
+		  console.error('Error logging out', err)
+		}
+	  }
+
   return (
     <header className='header'>
       <div className="wrapper">
@@ -37,12 +53,12 @@ const Header = () => {
         <div className="header__user">
 			{
 				!isLoggedIn ? 
-				<div className="header__user-login">
-					<span>Log in</span>
+				<Link to='/login' className="header__user-login">
+					<span>Войти</span>
 					<div className="icon"><FiLogIn/></div>
-				</div> : 
-				<div className="header__user-logout">
-					<span>Мағжан Жұмабай</span>
+				</Link> : 
+				<div className="header__user-logout" onClick={onClickLogout}>
+					<span>Выйти</span>
 					<div className="icon"><FiLogOut/></div>
 				</div>
 			}

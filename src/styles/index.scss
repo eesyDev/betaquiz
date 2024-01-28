@@ -120,9 +120,8 @@ h2, .h2 {
     padding: 30px;
 }
 .inner {
-    padding-left: 20px;
-    padding-right: 20px;
-    margin-top: 20px;
+    padding-left: 30px;
+    margin-top: 30px;
 }
 
 .wrapper {
@@ -165,7 +164,7 @@ h2, .h2 {
         padding: 0 20px;
         height: 45px;
         cursor: pointer;
-        > div {
+        > div, a {
             display: flex;
             align-items: center;
             gap: 10px;
@@ -535,4 +534,22 @@ h2, .h2 {
     display: flex;
     align-items: center;
     justify-content: center;
+}
+
+.groups {
+    &__wrapper {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 30px;
+        margin-top: 30px;
+        .group-card {
+            width: calc(33.33333% - 20px);
+        }
+    }
+}
+
+.group-card {
+    padding: 20px;
+    border-radius: 12px;
+    background-color: #fff;
 }

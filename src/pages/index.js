@@ -6,3 +6,4 @@ export { default as Results } from './Results';
 export { default as Quizes } from './Quizes';
 export { default as SingleClass } from './SingleClass';
 export { default as CreateQuiz } from './CreateQuiz';
+export { default as SingleGroup } from './SingleGroup';
