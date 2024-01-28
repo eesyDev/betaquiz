@@ -33,7 +33,7 @@ const LoginForm = ({ formType, setFormType }) => {
 
         const response = await login(userCredentials);
 
-        if (response.data.token ) {
+        if (response?.data?.token ) {
             window.localStorage.setItem('token', `Token ${response.data.token}`);
             dispatch(setAuthState({ isLoggedIn: true, token: { ...response.data.token } }));
 
