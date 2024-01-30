@@ -1,5 +1,5 @@
 import React from 'react';
-import { Header, Sidebar } from '../components';
+import { Header, Sidebar, Footer } from '../components';
 import { useGetTeachersQuery } from '../services/teacherApi';
 
 
@@ -13,6 +13,7 @@ const Home = ({isOpen}) => {
         <div className='container'>
           <Header/>
           homepage
+          <Footer/>
         </div>
     </div>
   )

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Header, Sidebar, GroupCard } from '../components';
+import { Header, Sidebar, GroupCard, Footer } from '../components';
 import { useGetTeacherGroupsQuery } from '../services/teacherGroupApi';
 
 
@@ -28,7 +28,8 @@ const Groups = ({isOpen}) => {
               ))
             }
           </div>
-        </div>     
+        </div>   
+        <Footer/>  
       </div>
     </div>
   )

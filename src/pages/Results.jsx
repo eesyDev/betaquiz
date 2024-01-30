@@ -1,5 +1,5 @@
 import React from 'react';
-import { Header, Sidebar } from '../components';
+import { Header, Sidebar, Footer } from '../components';
 
 
 const Results = ({isOpen}) => {
@@ -9,6 +9,7 @@ const Results = ({isOpen}) => {
       <div className="container">
         <Header/>
         res
+        <Footer/>
       </div>
     </div>
   )

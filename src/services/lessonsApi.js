@@ -34,7 +34,19 @@ export const lessonsApi = createApi({
                 return request;
             },
         }),
+        getSubjectById: builder.query({
+            query: (data) => {
+                const request = createRequest('/alfa_requests/lessons/get_lesson_id', 'POST', data);
+                return request;
+            },
+        }),
     })
 });
 
-export const { useGetLessonsQuery, useGetTeacherLessonsQuery, useGetSubjectsQuery, useGetSingleSubjectQuery } = lessonsApi;
+export const { 
+    useGetLessonsQuery, 
+    useGetTeacherLessonsQuery, 
+    useGetSubjectsQuery, 
+    useGetSingleSubjectQuery,
+    useGetSubjectByIdQuery
+ } = lessonsApi;

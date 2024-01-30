@@ -1,25 +1,37 @@
 import React, { useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 
-import { Header, Sidebar } from '../components';
-import { useGetSingleSubjectQuery } from '../services/lessonsApi';
-import { useGetStudentsQuery } from '../services/studentsApi';
+import { Header, Sidebar, Footer } from '../components';
+import { useGetGroupByIdQuery, useGetGroupStudentsQuery } from '../services/teacherGroupApi';
+
 
 
 const SingleGroup = ({isOpen}) => {
     const { id } = useParams();
 
-    // const { data, isFetching } = useGetSingleSubjectQuery(id)
-    const { data, isFetching } = useGetStudentsQuery()
+    const { data: groupData, isFetching } = useGetGroupByIdQuery({group_ids: [id]})
+    const { data: studentsData, isFetching: isStudentsFetching } = useGetGroupStudentsQuery({group_ids: [id]});
 
-
-    console.log(data)
+    console.log(studentsData)
   return (
-    <div className={isOpen ? 'content with-sidebar results' : 'content with-sidebar results m-less'}>
+    <div className={isOpen ? 'content with-sidebar single-group' : 'content with-sidebar single-group m-less'}>
       <Sidebar/>
       <div className="container">
         <Header/>
-        
+        <div className="inner">
+          <h1 className="h1">{groupData?.items[0]?.name}</h1>
+          <div className="layer">
+            <h3 className="h3">Ученики</h3>
+            <div className="single-group__students-list">
+              {
+                studentsData?.map((student) => (
+                  <div className='single-group__students-list-item'>{student.name}</div>
+                ))
+              }
+            </div>
+          </div>
+        </div>
+        <Footer/>
       </div>
     </div>
   )

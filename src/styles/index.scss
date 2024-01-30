@@ -1,12 +1,14 @@
 
 @import 'calendar.scss';
+@import url('https://fonts.googleapis.com/css2?family=Nunito+Sans:ital,opsz,wght@0,6..12,200;0,6..12,300;0,6..12,400;0,6..12,500;0,6..12,600;0,6..12,700;0,6..12,800;0,6..12,900;0,6..12,1000;1,6..12,200;1,6..12,300;1,6..12,400;1,6..12,500;1,6..12,600;1,6..12,700;1,6..12,800;1,6..12,900;1,6..12,1000&display=swap');
 * {
     box-sizing: border-box;
-    font-family: 'Futura';
+    font-family: 'Nunito Sans';
     font-weight: 400;
 
 }
 :root {
+    --secondary: #0023ff;
     --lilac: #B39DDB;
     --violet: #673AB7;
     --light-yellow: #FFF7EB;
@@ -70,7 +72,13 @@ img, svg {
         background-color: rgba(0,0,0,.8);
     }
 }
-
+.btn--secondary {
+    background-color: var(--secondary);
+    color: #fff;
+    &:hover {
+        background-color: rgba(0,35,255,.8);
+    }
+}
 .btn--green {
     background-color: #468729;
     color: #fff;
@@ -92,13 +100,18 @@ img, svg {
 
 h1, .h1 {
     font-size: 50px;
-    font-weight: 500;
+    font-weight: 600;
     margin: 0;
     text-align: left;
 }
 
 h2, .h2 {
     font-size: 40px;
+    font-weight: 600;
+    margin: 0;
+}
+h3, .h3 {
+    font-size: 30px;
     font-weight: 500;
     margin: 0;
 }
@@ -122,6 +135,7 @@ h2, .h2 {
 .inner {
     padding-left: 30px;
     margin-top: 30px;
+    padding-right: 30px;
 }
 
 .wrapper {
@@ -521,7 +535,7 @@ h2, .h2 {
    
 }
 
-.create-quiz {
+.create-quiz-btn {
     position: fixed;
     width: 80px;
     height: 80px;
@@ -552,4 +566,79 @@ h2, .h2 {
     padding: 20px;
     border-radius: 12px;
     background-color: #fff;
+}
+
+.create-quiz {
+    &__form {
+        margin-top: 30px;
+        form {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            input {
+                background-color: #fff;
+            }
+        }
+        &-row {
+            display: flex;
+            gap: 20px;
+            select {
+                width: 30%;
+            }
+        }
+    }
+    .option-variant-item {
+        display: flex;
+        margin-bottom: 20px;
+        gap: 20px;
+        justify-content: space-between;
+    }
+}
+
+.footer {
+    background-color: #fff;
+    width: 100%;
+    padding: 20px;
+    margin-top: 30px;
+}
+
+.filter {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 12px;
+    display: flex;
+    gap: 20px;
+    justify-content: flex-end;
+    align-items: center;
+    select {
+        border: 1px solid rgba(0, 0, 0, 0.2);
+        padding: 15px 20px;
+        border-radius: 7px;
+    }
+}
+
+.single-group {
+    .layer {
+        margin-top: 30px;
+    }
+    .h3 {
+        text-align: left;
+    }
+    &__students-list {
+        text-align: left;
+        counter-reset: item;
+        margin-top: 20px;
+        &-item {
+            position: relative;
+            padding-left: 30px;
+            padding-top: 8px;
+            padding-bottom: 8px;
+            &:before {
+                content: counter(item) ") ";
+                counter-increment: item;
+                position: absolute;
+                left: 0;
+            }
+        }
+    }
 }

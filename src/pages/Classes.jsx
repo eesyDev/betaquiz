@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { useGetLessonsQuery, useGetTeacherLessonsQuery } from '../services/lessonsApi';
 import { useGetTeacherGroupsQuery } from '../services/teacherGroupApi';
 
-import { Header, Sidebar, Calendar } from '../components';
+import { Header, Sidebar, Calendar, Footer } from '../components';
 import { scheduleData } from '../data/data';
 
 
@@ -27,6 +27,8 @@ const Classes = ({isOpen, isCalendarOpen}) => {
 			setlessons(lessonsData?.items)
 		}
 	}, [lessonsData]);
+
+	console.log(lessonsData)
 
 	const linkClassesWithGroups = (lessons, groups) => {
 		return lessons.map(cls => {
@@ -84,7 +86,7 @@ const Classes = ({isOpen, isCalendarOpen}) => {
 										const formattedTimeFromTo = `${hoursFrom < 10 ? '0' : ''}${hoursFrom}:${minutesFrom < 10 ? '0' : ''}${minutesFrom } - ${hoursTo < 10 ? '0' : ''}${hoursTo}:${minutesTo < 10 ? '0' : ''}${minutesTo}`;
 										return (
 											<li className="lessons__list-item" key={index}>
-												<Link to='/classes/math'>
+												<Link to={`/classes/${lesson.id}`}>
 													<span className="date">{formattedDateFrom}</span>
 													<span className="time">{formattedTimeFromTo}</span>
 													<span className="group">{lesson?.groups[0]?.name}</span>
@@ -100,7 +102,7 @@ const Classes = ({isOpen, isCalendarOpen}) => {
 					}
 				</div>
 				
-				
+				<Footer/>
 			</div>	
 		</div>
 	);

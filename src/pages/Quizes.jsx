@@ -1,8 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { BsPencilSquare } from "react-icons/bs";
 import { Link } from 'react-router-dom';
 
-import { Header, Sidebar, QuizCard } from '../components';
+import { Header, Sidebar, QuizCard, Footer } from '../components';
 import { quizesData } from '../data/data';
 
 const Quizes = ({ isOpen }) => {
@@ -26,6 +26,10 @@ const Quizes = ({ isOpen }) => {
 		});
 		setFilteredQuizes(newFilteredQuizes);
 	  };
+
+	useEffect(() => {
+		handleFilter(grade, group, subject);
+	}, [grade, group, subject]);
 	
   return (
     <div className={isOpen ? 'content with-sidebar quizes' : 'content with-sidebar quizes m-less'}>
@@ -34,7 +38,7 @@ const Quizes = ({ isOpen }) => {
         <Header/>
         <div className="inner">
           <h1 className="h1">Квизы</h1>
-		  <div className="quizes__filter">
+		  <div className="quizes__filter filter">
 		  	<select value={grade} onChange={(e) => setGrade(e.target.value)}>
 				<option value="">Сложность</option>
 				{grades.map((subject) => (
@@ -59,7 +63,7 @@ const Quizes = ({ isOpen }) => {
 				</option>
 				))}
 			</select>
-			<button className='filter' onClick={() => handleFilter(grade, group, subject)}>Filter</button>
+			{/* <button className='filter' onClick={() => handleFilter(grade, group, subject)}>Filter</button> */}
 		  </div>
           <div className='quizes__cards-wrapper'>
             {
@@ -77,10 +81,11 @@ const Quizes = ({ isOpen }) => {
               ))
             }
           </div>
-		  <Link to='/create-quiz' className="create-quiz">
+		  <Link to='/create-quiz' className="create-quiz-btn">
 			<BsPencilSquare/>
 		  </Link>
         </div>
+		<Footer/>
       </div>
     </div>
   )
