@@ -18,7 +18,6 @@ export const registerApi = createApi({
         verifyPhone: builder.mutation({
             query: (phone) => {
                 const request = createRequest('/verify/verify_phone/', 'POST', phone);
-                console.log('Request:', request);
                 return request;
             },  
         }),

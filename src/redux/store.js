@@ -8,7 +8,9 @@ import { registerApi } from '../services/registerApi';
 import { teacherGroupApi } from '../services/teacherGroupApi';
 import { lessonsApi } from '../services/lessonsApi';
 import { studentsApi } from '../services/studentsApi';
+import { questionApi } from '../services/questonsApi';
 import authReducer from './slices/authSlice';
+import tagsReducer from './slices/tagsSlice';
 
 
 const store = configureStore({
@@ -22,7 +24,9 @@ const store = configureStore({
     [teacherGroupApi.reducerPath] : teacherGroupApi.reducer,
     [lessonsApi.reducerPath] : lessonsApi.reducer,
     [studentsApi.reducerPath] : studentsApi.reducer, 
-    authSlice: authReducer
+    [questionApi.reducerPath] : questionApi.reducer,
+    authSlice: authReducer,
+    tags: tagsReducer
 
   },
   middleware: (getDefaultMiddleware) =>
@@ -33,7 +37,8 @@ const store = configureStore({
             registerApi.middleware,
             teacherGroupApi.middleware,
             lessonsApi.middleware,
-            studentsApi.middleware
+            studentsApi.middleware,
+            questionApi.middleware,
             ),
 })
 

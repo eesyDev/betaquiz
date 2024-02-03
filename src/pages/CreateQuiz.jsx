@@ -7,7 +7,8 @@ import { useForm } from 'react-hook-form';
 import { RadioGroup, Radio, FormControlLabel, Button, Box, Checkbox } from '@mui/material';
 import { MuiFileInput } from 'mui-file-input'
 
-import { Header, Sidebar, Footer } from '../components';
+import { Header, Sidebar, Footer, AddQuestions } from '../components';
+import { useCreateQuestionMutation, useCreateQuizMutation } from '../services/questonsApi';
 
 const CreateQuiz = ({ isOpen }) => {
     const firstMathfieldRef = useRef();
@@ -17,27 +18,19 @@ const CreateQuiz = ({ isOpen }) => {
     const [currentOptions, setCurrentOptions] = useState(['', '', '', '']);
     const [correctAnswerIndex, setCorrectAnswerIndex] = useState(null);
     const [questionImage, setQuestionImage] = useState(null);
+    const [description, setDescription] = useState('');
 
     const { register, handleSubmit, setError: setFormError, formState: { errors } } = useForm();
+
+    const [createQuiz] = useCreateQuizMutation();
 
 
     const clear = () => {
         firstMathfieldRef.current.latex("");
     };
 
-    const onSubmit = async (values) => {
-        let quiz_title = values.title;
-        let subject = values.subject;
-        let grade = values.grade;
 
-        const quizData = {
-             quiz_title, subject, grade, questions
-        };
-        console.log(quizData)
-    }
-    
-      const handleAddQuestion = (event) => {
-        event.preventDefault(); 
+    const onSubmit = async (values) => {
         if (correctAnswerIndex === null) {
             alert('Выберите правильный вариант ответа');
             return;
@@ -49,12 +42,33 @@ const CreateQuiz = ({ isOpen }) => {
             image: questionImage
           };
         setQuestions((prevQuestions) => [...prevQuestions, newQuestion]);
-        setCurrentQuestion('');
-        setCurrentOptions(['', '', '', '']);
-        setQuestionImage(null);
-        setCorrectAnswerIndex(null);
-        console.log(newQuestion)
+        // setCurrentQuestion('');
+        // setCurrentOptions(['', '', '', '']);
+        // setQuestionImage(null);
+        // setCorrectAnswerIndex(null);
+
+        let quiz_title = values.title;
+        let subject = values.subject;
+        let level = values.grade;
+        let language = values.language;
+        let duration = values.duration;
+        let description = values.description;
+
+        const quizData = {
+             title: quiz_title, description, level, language, duration, questions
+        };
+        console.log(quizData)
+
+        try {
+            const responce = await createQuiz(quizData);
+            console.log(responce)
+        } catch(err) {
+            console.error(err)
+        }
+        
     }
+    
+
     useEffect(() => {
         console.log(questions);
       }, [questions]);
@@ -88,6 +102,7 @@ const CreateQuiz = ({ isOpen }) => {
                                 size="md"
                                 variant="outlined"
                                 sx={{width: "25%"}}
+                                // onChange={(e) => setSubject(e.target.value)}
                                 {...register('subject', { required: 'Выберите предмет' })}
                             >
                                 <Option value='Математика'>Математика</Option>
@@ -102,11 +117,12 @@ const CreateQuiz = ({ isOpen }) => {
                                 size="md"
                                 variant="outlined"
                                 sx={{width: "25%"}}
-                                {...register('subject', { required: 'Выберите сложность' })}
+                                // onChange={(e) => setGrade(e.target.value)}
+                                {...register('grade', { required: 'Выберите сложность' })}
                             >
-                                <Option value='Легкий'>Легкий</Option>
-                                <Option value='Средний'>Средний</Option>
-                                <Option value='Сложный'>Сложный</Option>
+                                <Option value='Easy'>Легкий</Option>
+                                <Option value='Medium'>Средний</Option>
+                                <Option value='Hard'>Сложный</Option>
                             </Select>
                             <Select
                                 color="primary"
@@ -115,13 +131,13 @@ const CreateQuiz = ({ isOpen }) => {
                                 size="md"
                                 variant="outlined"
                                 sx={{width: "25%"}}
+                                // onChange={(e) => setLanguage(e.target.value)}
                                 {...register('language', { required: 'Выберите язык' })}
                             >
-                                <Option value='Легкий'>Казахский</Option>
-                                <Option value='Средний'>Русский</Option>
-                                <Option value='Сложный'>Английский</Option>
-                            </Select>
-                            
+                                <Option value='Казахский'>Казахский</Option>
+                                <Option value='Русский'>Русский</Option>
+                                <Option value='Английский'>Английский</Option>
+                            </Select>                           
                             <Select
                                 color="primary"
                                 disabled={false}
@@ -129,11 +145,13 @@ const CreateQuiz = ({ isOpen }) => {
                                 size="md"
                                 variant="outlined"
                                 sx={{width: "25%"}}
+                                // onChange={(e) => setDuration(e.target.value)}
                                 {...register('duration', { required: 'Выберите длительность' })}
                             >
-                                <Option value='Легкий'>30 мин</Option>
-                                <Option value='Средний'>45 мин</Option>
-                                <Option value='Сложный'>60 мин</Option>
+                                <Option value='15'>15 мин</Option>
+                                <Option value='30'>30 мин</Option>
+                                <Option value='45'>45 мин</Option>
+                                <Option value='60'>60 мин</Option>
                             </Select>
                         {/* <MuiFileInput value={questionImage} onChange={handleChangeFile} /> */}
                         </div>
@@ -148,63 +166,12 @@ const CreateQuiz = ({ isOpen }) => {
                         />
                         <TextField
                             label="Описание"
-                            value={currentQuestion}
-                            onChange={(e) => setCurrentQuestion(e.target.value)}
+                            onChange={(e) => setDescription(e.target.value)}
                             fullWidth
                             {...register('description', { required: 'Введите описание' })}
                         />
                         </div>
-                        <TextField
-                            label="Введите вопрос"
-                            value={currentQuestion}
-                            onChange={(e) => setCurrentQuestion(e.target.value)}
-                            fullWidth
-                        />
-                        <input
-                            type="file"
-                            onChange={(e) => {
-                            const file = e.target.files[0];
-                            const reader = new FileReader();
-                            reader.onloadend = () => {
-                                setQuestionImage(reader.result);
-                            };
-                            if (file) {
-                                reader.readAsDataURL(file);
-                            }
-                            }}
-                        />
-                        {questionImage && (
-                            <img src={questionImage} alt="Question" style={{ maxWidth: '100%', maxHeight: '200px', width: '400px', objectFit: 'cover'}} />
-                        )}
-                        <Box mt={4}>
-                            {[...Array(4)].map((option, index) => (
-                            <div key={index} className='option-variant-item' >
-                                <TextField
-                                label={`Вариант ${index + 1}`}
-                                value={currentOptions[index]}
-                                onChange={(e) => {
-                                    const newOptions = [...currentOptions];
-                                    newOptions[index] = e.target.value;
-                                    setCurrentOptions(newOptions);
-                                  }}
-                                fullWidth
-                                />
-                                <FormControlLabel
-                                    control={<Checkbox
-                                    checked={correctAnswerIndex === index}
-                                    color="success"
-                                    sx={{fontSize: "14px"}}
-                                    onChange={() => setCorrectAnswerIndex(index)}
-                                    />}
-                                    label={`Правильный ответ`}
-                                    sx={{width: "25%"}}
-                                />
-                            </div>
-                            ))}
-                        </Box>
-                        <Button variant="contained" color="primary" onClick={handleAddQuestion}>
-                            Добавить вопрос
-                        </Button>
+                        <AddQuestions/>
                     <button className="btn btn--secondary" type="submit">
                         Создать квиз
                     </button>

@@ -48,7 +48,7 @@ const SingleClass = ({isOpen}) => {
 		}
 	  
 		// Если lessons - массив, применяем предыдущую логику
-		return lesson.map(cls => {
+		return lesson?.map(cls => {
 		  const linkedGroups = (cls.group_ids || []).map(groupId => {
 			const group = groups.find(group => group.id === groupId);
 			return group ? { id: group.id, name: group.name } : null;
