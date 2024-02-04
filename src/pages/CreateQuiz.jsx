@@ -3,12 +3,16 @@ import MathInput from "react-math-keyboard";
 import TextField from '@mui/material/TextField';
 import Select from '@mui/joy/Select';
 import Option from '@mui/joy/Option';
+import MenuItem from '@mui/joy/MenuItem';
 import { useForm } from 'react-hook-form';
 import { RadioGroup, Radio, FormControlLabel, Button, Box, Checkbox } from '@mui/material';
-import { MuiFileInput } from 'mui-file-input'
+import { MuiFileInput } from 'mui-file-input';
+import { useDispatch, useSelector } from 'react-redux';
+
 
 import { Header, Sidebar, Footer, AddQuestions } from '../components';
-import { useCreateQuestionMutation, useCreateQuizMutation } from '../services/questonsApi';
+import { useGetGroupNumberForLessonForQuizQuery, useCreateQuizMutation, useGetSubjectLessonForQuizQuery } from '../services/questonsApi';
+import { addClassNumber } from '../redux/slices/questionsSlice';
 
 const CreateQuiz = ({ isOpen }) => {
     const firstMathfieldRef = useRef();
@@ -19,22 +23,30 @@ const CreateQuiz = ({ isOpen }) => {
     const [correctAnswerIndex, setCorrectAnswerIndex] = useState(null);
     const [questionImage, setQuestionImage] = useState(null);
     const [description, setDescription] = useState('');
+    const [classNum, setClassNum] = useState(null)
+    
+
+    const dispatch = useDispatch();
+
 
     const { register, handleSubmit, setError: setFormError, formState: { errors } } = useForm();
 
     const [createQuiz] = useCreateQuizMutation();
+    const { data: subjects } = useGetSubjectLessonForQuizQuery()
+    const { data: classes } = useGetGroupNumberForLessonForQuizQuery();
 
 
     const clear = () => {
         firstMathfieldRef.current.latex("");
     };
+    console.log(classes)
 
 
     const onSubmit = async (values) => {
-        if (correctAnswerIndex === null) {
-            alert('Выберите правильный вариант ответа');
-            return;
-          }
+        // if (correctAnswerIndex === null) {
+        //     alert('Выберите правильный вариант ответа');
+        //     return;
+        //   }
         const newQuestion = {
             question: currentQuestion,
             options: [...currentOptions],
@@ -49,15 +61,14 @@ const CreateQuiz = ({ isOpen }) => {
 
         let quiz_title = values.title;
         let subject = values.subject;
-        let level = values.grade;
+        let level = values.level;
         let language = values.language;
         let duration = values.duration;
         let description = values.description;
 
         const quizData = {
-             title: quiz_title, description, level, language, duration, questions
+             title: quiz_title, description, level, language, duration, questions, subject
         };
-        console.log(quizData)
 
         try {
             const responce = await createQuiz(quizData);
@@ -69,9 +80,8 @@ const CreateQuiz = ({ isOpen }) => {
     }
     
 
-    useEffect(() => {
-        console.log(questions);
-      }, [questions]);
+    const classNumber = useSelector(state => state.questions.class_number);
+
 
       const handleChangeFile = (newValue) => {
         setQuestionImage(newValue);
@@ -85,6 +95,17 @@ const CreateQuiz = ({ isOpen }) => {
         //     reader.readAsDataURL(file);
         // }
       }
+
+      const handleChange = (e) => {
+            setClassNum(e.target.value);
+      };
+
+      useEffect(() => {
+        dispatch(addClassNumber(classNum))
+      }, [classNum])
+
+      console.log(classNumber)
+      
   return (
     <div className={isOpen ? 'content with-sidebar create-quiz' : 'content with-sidebar create-quiz m-less'}>
         <Sidebar isAddingQuiz/>
@@ -101,14 +122,15 @@ const CreateQuiz = ({ isOpen }) => {
                                 placeholder="Выберите предмет"
                                 size="md"
                                 variant="outlined"
-                                sx={{width: "25%"}}
+                                sx={{width: "20%"}}
                                 // onChange={(e) => setSubject(e.target.value)}
                                 {...register('subject', { required: 'Выберите предмет' })}
                             >
-                                <Option value='Математика'>Математика</Option>
-                                <Option value='Биология'>Биология</Option>
-                                <Option value='Химия'>Химия</Option>
-                                <Option value='Физика'>Физика</Option>
+                                {
+                                    subjects?.map((item) => (
+                                        <Option value={item.id} key={item.id}>{item.title}</Option>
+                                    ))
+                                }
                             </Select>
                             <Select
                                 color="primary"
@@ -116,9 +138,9 @@ const CreateQuiz = ({ isOpen }) => {
                                 placeholder="Выберите сложность"
                                 size="md"
                                 variant="outlined"
-                                sx={{width: "25%"}}
+                                sx={{width: "20%"}}
                                 // onChange={(e) => setGrade(e.target.value)}
-                                {...register('grade', { required: 'Выберите сложность' })}
+                                {...register('level', { required: 'Выберите сложность' })}
                             >
                                 <Option value='Easy'>Легкий</Option>
                                 <Option value='Medium'>Средний</Option>
@@ -130,7 +152,7 @@ const CreateQuiz = ({ isOpen }) => {
                                 placeholder="Выберите язык"
                                 size="md"
                                 variant="outlined"
-                                sx={{width: "25%"}}
+                                sx={{width: "20%"}}
                                 // onChange={(e) => setLanguage(e.target.value)}
                                 {...register('language', { required: 'Выберите язык' })}
                             >
@@ -144,7 +166,7 @@ const CreateQuiz = ({ isOpen }) => {
                                 placeholder="Выберите длительность"
                                 size="md"
                                 variant="outlined"
-                                sx={{width: "25%"}}
+                                sx={{width: "20%"}}
                                 // onChange={(e) => setDuration(e.target.value)}
                                 {...register('duration', { required: 'Выберите длительность' })}
                             >
@@ -153,6 +175,29 @@ const CreateQuiz = ({ isOpen }) => {
                                 <Option value='45'>45 мин</Option>
                                 <Option value='60'>60 мин</Option>
                             </Select>
+                            {/* <Select
+                                color="primary"
+                                placeholder="Выберите класс"
+                                size="md"
+                                variant="outlined"
+                                sx={{width: "20%"}}
+                                defaultValue={1}
+                                name="classNum"
+                                onChange={(e) => handleChange}
+                            >
+                                {
+                                    classes?.map((item) => (
+                                        <MenuItem value={item?.id} key={item?.number}>{item.number}</MenuItem>
+                                    ))
+                                }
+                            </Select> */}
+                            <select onChange={(e) => handleChange(e)}>
+                            {
+                                    classes?.map((item) => (
+                                        <option value={item?.id} key={item?.number}>{item.number}</option>
+                                    ))
+                                }
+                            </select>
                         {/* <MuiFileInput value={questionImage} onChange={handleChangeFile} /> */}
                         </div>
                         <div className="create-quiz__form-row">

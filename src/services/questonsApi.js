@@ -57,6 +57,24 @@ export const questionApi = createApi({
                 return request;
             },
         }),
+        editQuestion: builder.mutation({
+            query: (id, data) => {
+                const request = createRequest(`/q/questions/${id}/`, 'PATCH', data);
+                return request;
+            },
+        }),
+        editTags: builder.mutation({
+            query: (id, data) => {
+                const request = createRequest(`/q/question-tags/${id}/`, 'PATCH', data);
+                return request;
+            },
+        }),
+        getAllExistingQuestions: builder.query({
+            query: () => {
+                const request = createRequest('/q/questions/', 'GET');
+                return request;
+            },
+        }),
     })
 });
 
@@ -66,5 +84,7 @@ export const {
     useGetGroupNumberForLessonForQuizQuery,
     useGetSubjectLessonForQuizQuery,
     useSetTagsForQuestionMutation, 
-    useGetTagsForQuestionQuery
+    useGetTagsForQuestionQuery,
+    useEditQuestionMutation,
+    useGetAllExistingQuestionsQuery
  } = questionApi;

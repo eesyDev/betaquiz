@@ -52,6 +52,19 @@ img, svg {
     max-width: 100%;
 }
 
+.flex {
+    display: flex;
+    * {
+        flex: 1
+    }
+}
+.g-20 {
+    gap: 20px;
+}
+.change-state__btns-wrap {
+    margin-bottom: 30px;
+}
+
 .btn {
     display: flex;
     align-items: center;
