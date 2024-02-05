@@ -39,7 +39,6 @@ const CreateQuiz = ({ isOpen }) => {
     const clear = () => {
         firstMathfieldRef.current.latex("");
     };
-    console.log(classes)
 
 
     const onSubmit = async (values) => {

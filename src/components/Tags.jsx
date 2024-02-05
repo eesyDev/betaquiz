@@ -16,7 +16,6 @@ function TagInput() {
   
   const handleDelete = (i) => {
     const tagToDelete = tags[i];
-    console.log(tagToDelete.id)
     dispatch(removeTag(tagToDelete.id));
   };
 

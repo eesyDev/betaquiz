@@ -9,3 +9,4 @@ export { default as Footer } from './Footer';
 export { default as TagInput } from './Tags';
 export { default as AddQuestions } from './AddQuestions';
 export { default as SelectFromExistingQuestions } from './SelectFromExistingQuestions';
+export { default as QuestionModal } from './QuestionModal';

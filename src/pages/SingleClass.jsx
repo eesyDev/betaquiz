@@ -36,8 +36,8 @@ const SingleClass = ({isOpen}) => {
 	const linkTwoArrs = (lesson, groups) => {
 		// Проверяем, является ли lessons массивом
 		if (!Array.isArray(lesson)) {
-		  const linkedGroups = (lesson.group_ids || []).map(groupId => {
-			const group = groups.find(group => group.id === groupId);
+		  const linkedGroups = (lesson?.group_ids || []).map(groupId => {
+			const group = groups?.find(group => group?.id === groupId);
 			return group ? { id: group.id, name: group.name } : null;
 		  }).filter(Boolean);
 	  
@@ -49,8 +49,8 @@ const SingleClass = ({isOpen}) => {
 	  
 		// Если lessons - массив, применяем предыдущую логику
 		return lesson?.map(cls => {
-		  const linkedGroups = (cls.group_ids || []).map(groupId => {
-			const group = groups.find(group => group.id === groupId);
+		  const linkedGroups = (cls?.group_ids || []).map(groupId => {
+			const group = groups?.find(group => group?.id === groupId);
 			return group ? { id: group.id, name: group.name } : null;
 		  }).filter(Boolean);
 	  
@@ -78,7 +78,7 @@ const SingleClass = ({isOpen}) => {
 		// Проверяем, является ли lessons массивом
 		if (!Array.isArray(lesson)) {
 		  const linkedStudents = (lesson.details || []).map(studentId => {
-			const studentsNames = students.find(student => student.student_id === studentId.customer_id);
+			const studentsNames = students?.find(student => student?.student_id === studentId?.customer_id);
 			return studentsNames ? { id: studentsNames.student_id, name: studentsNames.name } : null;
 		  }).filter(Boolean);
 	  
@@ -91,7 +91,7 @@ const SingleClass = ({isOpen}) => {
 		// Если lessons - массив, применяем предыдущую логику
 		return lesson.map(cls => {
 		  const linkedStudents = (cls.details || []).map(studentId => {
-			const studentsNames = students.find(student => student.student_id === studentId.customer_id);
+			const studentsNames = students?.find(student => student?.student_id === studentId?.customer_id);
 			return studentsNames ? { id: studentsNames.student_id, name: studentsNames.name } : null;
 		  }).filter(Boolean);
 	  

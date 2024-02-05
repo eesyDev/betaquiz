@@ -62,7 +62,7 @@ img, svg {
     gap: 20px;
 }
 .change-state__btns-wrap {
-    margin-bottom: 30px;
+    margin-top: 20px;
 }
 
 .btn {
@@ -92,6 +92,13 @@ img, svg {
         background-color: rgba(0,35,255,.8);
     }
 }
+.btn--outlined-secondary {
+    background-color: var(--secondary);
+    color: var(--secondary);
+    &:hover {
+        background-color: rgba(0,35,255,.8);
+    }
+}
 .btn--green {
     background-color: #468729;
     color: #fff;
@@ -108,6 +115,59 @@ img, svg {
     gap: 10px;
     &:hover {
         opacity: .8;
+    }
+}
+.btn--solid-violet {
+    background-color: var(--violet);
+    color: #fff;
+    &:hover {
+        background-color: #825cc1;
+    }
+}
+
+.btn--rounded {
+    background-color: var(--violet);
+    color: #fff;
+    width: 40px;
+    height: 40px;
+    border: none;
+    font-size: 20px;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all .2s ease-in;
+    &:hover {
+        background-color: var(--lilac);
+        color: var(--violet);
+    }
+}
+.btn--transparent {
+    background-color: transparent;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    color: var(--violet);
+    border: none;
+    font-size: 20px;
+    transition: all .2s ease-in;
+    border-radius: 50%;
+    &:hover {
+        background-color: #efefef;
+        // color: var(--violet);
+    }
+}
+
+.btn--outlined-violet {
+    border: 1px solid var(--violet);
+    color: var(--violet);
+    &:hover {
+        background-color: #825cc1;
+        color: #fff;
     }
 }
 
@@ -652,6 +712,118 @@ h3, .h3 {
                 position: absolute;
                 left: 0;
             }
+        }
+    }
+}
+
+.added-questions {
+    display: flex;
+    gap: 20px;
+    margin-top: 20px;
+    flex-wrap: wrap;
+    counter-reset: item;
+    .question-item {
+        background-color: #fff;
+        padding: 20px;
+        border-radius: 10px;
+        width: calc(25% - 15px);
+        text-align: left;
+        position: relative;
+        padding-top: 40px;
+        display: flex;
+        justify-content: space-between;
+        flex-direction: column;
+        &:before {
+            content: counter(item) ".";
+            counter-increment: item;
+            position: absolute;
+            top: 10px;
+        }
+        &-title {
+            font-size: 25px;
+            font-weight: 600;
+        }
+        &-bottom {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 20px;
+            &-left {
+                display: flex;
+                gap: 10px;
+            }
+        }
+    }
+}
+
+.modal {
+    background-color: rgba(0,0,0,.5);
+    width: 100%;
+    height: 100%;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    position: fixed;
+    &-content {
+        background-color: #fff;
+        border-radius: 10px;
+        padding: 40px;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%);
+        position: absolute;
+    min-width: 300px;
+
+    }
+    .title {
+        font-size: 30px;
+        font-weight: 600;
+        margin: 0;
+    }
+    .btn--transparent {
+        font-size: 20px;
+        position: absolute;
+        right: 10px;
+        top: 10px;
+        font-size: 30px;
+    }
+    ul {
+        text-align: left;
+        font-size: 18px;
+        column-count: 2;
+        margin-top: 20px;
+        li {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 10px;
+            .indicator {
+                width: 20px;
+                height: 20px;
+                border-radius: 50%;
+                display: inline-block;
+                &.green {
+                    background-color: #468729;
+                }
+                &.red {
+                    background-color: #9E9E9E;
+                }
+            }
+        }
+    }
+    .vars-title {
+        padding-bottom: 20px;
+        position: relative;
+        display: flex;
+        width: 100%;
+        margin-top: 20px;
+        &:before {
+            content: '';
+            width: 100%;
+            height: 1px;
+            background-color: #efefef;
+            position: absolute;
+            bottom: 10px;
         }
     }
 }

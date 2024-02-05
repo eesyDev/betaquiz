@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { FormControl, FormGroup, FormControlLabel, Checkbox, Button } from '@mui/material';
 import { useGetAllExistingQuestionsQuery } from '../services/questonsApi';
@@ -7,7 +7,7 @@ import { addQuestion, editQuestion, updateQuestion, removeQuestion } from '../re
 
 
 const SelectFromExistingQuestions = ({ onSelect }) => {
-  const {data: availableQuestions} = useGetAllExistingQuestionsQuery();
+  const { data: availableQuestions } = useGetAllExistingQuestionsQuery();
   const [selectedQuestions, setSelectedQuestions] = useState([]);
 
   const dispatch = useDispatch();
@@ -28,10 +28,11 @@ const SelectFromExistingQuestions = ({ onSelect }) => {
       selectedQuestions.includes(question.id)
     );
     selectedQuestionsData.forEach((question) => {
-        dispatch(addQuestion(question));
-      });
-    
-      setSelectedQuestions([]);
+      dispatch(addQuestion(question));
+    });
+    localStorage.setItem('selectedQuestions', JSON.stringify(selectedQuestions));
+
+    setSelectedQuestions([]);
     // console.log(selectedQuestionsData)
     // dispatch(addQuestion(selectedQuestionsData));
     // setSelectedQuestions([]);

@@ -1,11 +1,15 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import TextField from '@mui/material/TextField';
 import { RadioGroup, Radio, FormControlLabel, Button, Box, Checkbox } from '@mui/material';
 import { useForm } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
+import { HiOutlinePencilSquare } from "react-icons/hi2";
+import { RiDeleteBin2Line } from "react-icons/ri";
+import { FaRegEye } from "react-icons/fa";
 
-import { TagInput, SelectFromExistingQuestions } from '../components';
-import { useCreateQuestionMutation, useEditQuestionMutation } from '../services/questonsApi';
+
+import { TagInput, SelectFromExistingQuestions, QuestionModal, TagComponent } from '../components';
+import { useCreateQuestionMutation, useEditQuestionMutation, useGetAllExistingQuestionsQuery } from '../services/questonsApi';
 import { addQuestion, editQuestion, updateQuestion, removeQuestion } from '../redux/slices/questionsSlice';
 
 
@@ -18,21 +22,45 @@ const AddQuestions = () => {
     { title: '', correct: false },
     { title: '', correct: false },
     ]);
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [selectedQuestion, setSelectedQuestion] = useState(null);
     const [questions, setQuestions] = useState([]);
     const [subject, setSubject] = useState(1);
     const [classNumber, setClassNumber] = useState([3]);
 
     const dispatch = useDispatch();
+    const { data: availableQuestions } = useGetAllExistingQuestionsQuery();
+
+
+      // Загрузка сохраненных выбранных вопросов при перезагрузке компонента
+      useEffect(() => {
+        const storedSelectedQuestions = localStorage.getItem('selectedQuestions');
+        if (storedSelectedQuestions) {
+          const parsedSelectedQuestions = JSON.parse(storedSelectedQuestions);
+      
+          // Фильтрация вопросов, которые есть в availableQuestions
+          const selectedQuestionsData = availableQuestions?.filter((question) =>
+            parsedSelectedQuestions?.includes(Number(question.id))
+          );
+
+          console.log(selectedQuestionsData)
+
+          selectedQuestionsData?.forEach((question) => {
+            dispatch(addQuestion(question));
+          });
+        }
+      }, [availableQuestions]);
 
     const [createQuestion] = useCreateQuestionMutation();
     const [editQuestion] = useEditQuestionMutation();
     const selectedTags = useSelector(state => state.tags.selectedTags);
     const tagIds = selectedTags.map(tag => tag.id);
 
+    const modalRef = useRef(null);
+
     const addedQuestions = useSelector(state => state.questions.addedQuestions);
     const editedQuestion = useSelector(state => state.questions.editedQuestion);
     const classNumberState = useSelector(state => state.questions.class_number);
-
 
     const handleEditQuestion = (question) => {
         dispatch(editQuestion(question));
@@ -43,31 +71,34 @@ const AddQuestions = () => {
 
     const handleCancelEdit = () => {
         dispatch(editQuestion(null));
-        // setCurrentQuestion('');
-        // setCurrentAnswers([]);
-        // setSubject(1);
-        // setClassNumber([3]);
     };
 
     const handleUpdateQuestion = async (id) => {
         const data = {
             title: currentQuestion,
             question_answers: [...currentAnswers],
-            // Другие поля, если есть
         };
 
         try {
             const result = await editQuestion(id, data);
             dispatch(updateQuestion(result.data));
-            handleCancelEdit(); // Сбросьте состояние формы после успешного обновления
+            handleCancelEdit();
         } catch (error) {
             console.error('Ошибка при обновлении вопроса', error);
         }
     };
 
     const handleRemoveQuestion = (question) => {
-        console.log(question);
+        // Получение текущего массива из localStorage
+        const storedSelectedQuestions = JSON.parse(localStorage.getItem('selectedQuestions')) || [];
+
+        // // Фильтрация массива, чтобы удалить вопрос с определенным id
+        const updatedQuestions = storedSelectedQuestions.filter((storageQuestion) => storageQuestion !== question);
+
+        // // Сохранение обновленного массива обратно в localStorage
+        localStorage.setItem('selectedQuestions', JSON.stringify(updatedQuestions));
         dispatch(removeQuestion(question));
+
     }
 
     const handleCheckboxChange = (index) => {
@@ -78,7 +109,6 @@ const AddQuestions = () => {
         setCurrentAnswers(newOptions);
     };
 
-    console.log(addedQuestions);
 
     const handleAddQuestion = async (event) => {
         event.preventDefault();
@@ -87,7 +117,6 @@ const AddQuestions = () => {
         const isAnyAnswerEmpty = currentAnswers.some((answer) => answer.title.trim() === '');
 
         if (qForm !== 'new-question') {
-            // Выбрана другая форма, не выполняем проверку
             return;
         }
 
@@ -128,27 +157,40 @@ const AddQuestions = () => {
         setQuestionImage(null);
     }
 
+    const handleOpenModal = (question) => {
+        setSelectedQuestion(question);
+        setIsModalOpen(true);
+      };
+    
+      const handleCloseModal = () => {
+        setSelectedQuestion(null);
+        setIsModalOpen(false);
+      };
+
+
+
     return (
         <div>
-            <div className="change-state__btns-wrap flex g-20">
-                <div className="btn btn--secondary" onClick={() => setQform('new-question')}>Добавить новый вопрос</div>
-                <div className="btn btn--green" onClick={() => setQform('exs-question')}>Выбрать из существующих</div>
-            </div>
             <div className="added-questions">
                 {
                     addedQuestions && addedQuestions?.map((question, index) => (
                         <div className="question-item">
-                            <div className="id">{question?.id}</div>
-                            <div>{question?.title}</div>
-                            <ul>
-                                {question?.question_answers?.map((answer, index) => (
-                                    <li key={index}>{answer?.title}</li>
-                                ))}
-                            </ul>
-                            <Button onClick={() => handleEditQuestion(question.id)}>Редактировать</Button>
-                            <Button onClick={() => handleRemoveQuestion(question.id)}>Удалить</Button>
+                            {/* <div className="id">{question?.id}</div> */}
+                            <div className='question-item-title'>{question?.title}</div>
+                            <div className="question-item-bottom">
+                                <div className="question-item-bottom-left">
+                                    <button className='btn--rounded' onClick={() => handleEditQuestion(question.id)}><HiOutlinePencilSquare /></button>
+                                    <button className='btn--rounded' onClick={() => handleRemoveQuestion(question.id)}><RiDeleteBin2Line /></button>
+                                </div>
+                                <a className='btn--transparent' onClick={() => handleOpenModal(question)}><FaRegEye /></a>
+                            </div>
                         </div>
                     ))
+                }
+                {
+                    isModalOpen && (
+                        <QuestionModal isModalOpen={isModalOpen} handleCloseModal={handleCloseModal} selectedQuestion={selectedQuestion}/>
+                    )
                 }
                 {editedQuestion && (
                     <div>
@@ -163,6 +205,11 @@ const AddQuestions = () => {
                     </div>
                 )}
             </div>
+            <div className="change-state__btns-wrap flex g-20">
+                <div className="btn btn--solid-violet" onClick={() => setQform('new-question')}>Добавить новый вопрос</div>
+                <div className="btn btn--outlined-violet" onClick={() => setQform('exs-question')}>Выбрать из существующих</div>
+            </div>
+
             {
                 qForm === 'new-question' ? (
 
