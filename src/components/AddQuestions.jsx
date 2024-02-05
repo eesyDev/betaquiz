@@ -174,7 +174,7 @@ const AddQuestions = () => {
             <div className="added-questions">
                 {
                     addedQuestions && addedQuestions?.map((question, index) => (
-                        <div className="question-item">
+                        <div className="question-item" key={index}>
                             {/* <div className="id">{question?.id}</div> */}
                             <div className='question-item-title'>{question?.title}</div>
                             <div className="question-item-bottom">
