@@ -1,7 +1,7 @@
 import { fetchBaseQuery } from "@reduxjs/toolkit/query";
 
 const baseQuery = fetchBaseQuery({
-    baseUrl: 'http://api.betterquiz.kz/api',
+    baseUrl: 'https://api.betterquiz.kz/api',
     prepareHeaders: (headers) => {
         const token = window.localStorage.getItem('token');
         console.log(token)

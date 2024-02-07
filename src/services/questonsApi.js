@@ -9,7 +9,7 @@ const createRequest = (url, method, data) => ({
 export const questionApi = createApi({
     reducerPath: 'questionApi',
     baseQuery: fetchBaseQuery({
-        baseUrl: 'http://api.betterquiz.kz/api',
+        baseUrl: 'https://api.betterquiz.kz/api',
         prepareHeaders: (headers, { getState }) => {
           headers.set('Content-Type', 'application/json');
           const token = window.localStorage.getItem('token');
@@ -29,7 +29,13 @@ export const questionApi = createApi({
         }),
         createQuiz: builder.mutation({
             query: (data) => {
-                const request = createRequest('/v2/quiz/quiz', 'POST', data);
+                const request = createRequest('/v2/quiz/quiz/', 'POST', data);
+                return request;
+            },
+        }),
+        getAllExistingQuiz: builder.query({
+            query: () => {
+                const request = createRequest('/v2/quiz/quiz', 'GET');
                 return request;
             },
         }),
@@ -86,5 +92,6 @@ export const {
     useSetTagsForQuestionMutation, 
     useGetTagsForQuestionQuery,
     useEditQuestionMutation,
-    useGetAllExistingQuestionsQuery
+    useGetAllExistingQuestionsQuery,
+    useGetAllExistingQuizQuery
  } = questionApi;

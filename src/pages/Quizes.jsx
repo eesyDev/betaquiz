@@ -4,12 +4,17 @@ import { Link } from 'react-router-dom';
 
 import { Header, Sidebar, QuizCard, Footer } from '../components';
 import { quizesData } from '../data/data';
+import { useGetAllExistingQuizQuery } from '../services/questonsApi';
 
 const Quizes = ({ isOpen }) => {
 	const [filteredQuizes, setFilteredQuizes] = useState(quizesData);
 	const [subject, setSubject] = useState('');
 	const [grade, setGrade] = useState('');
 	const [group, setGroup] = useState('');
+
+	const { data: quizes } = useGetAllExistingQuizQuery();
+
+	console.log(quizes);
 
 	const subjects = [...new Set(quizesData.map((quiz) => quiz.subject))];
 	const grades = [...new Set(quizesData.map((quiz) => quiz.grade))];

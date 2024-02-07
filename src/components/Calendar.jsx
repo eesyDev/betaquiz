@@ -28,6 +28,7 @@ const Calendar = ({scheduleData}) => {
                 selectedDate={new Date(2024, 0, 10)}
                 eventSettings={{ dataSource: scheduleData }}
                 dragStart={onDragStart}
+                readOnly={true}
             >
                 <ViewsDirective>
                 { ['Day', 'Week', 'Month', 'Agenda'].map((item) => <ViewDirective key={item} option={item} />)}

@@ -8,7 +8,7 @@ const createRequest = (url, method, data) => ({
 export const registerApi = createApi({
     reducerPath: 'registerApi',
     baseQuery: fetchBaseQuery({
-        baseUrl: 'http://api.betterquiz.kz/api',
+        baseUrl: 'https://api.betterquiz.kz/api',
         prepareHeaders: (headers, { getState }) => {
           headers.set('Content-Type', 'application/json');
           return headers;

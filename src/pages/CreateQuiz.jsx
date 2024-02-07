@@ -39,7 +39,12 @@ const CreateQuiz = ({ isOpen }) => {
     const clear = () => {
         firstMathfieldRef.current.latex("");
     };
+    const classNumber = useSelector(state => state.questions.class_number);
+    const addedQuestions = useSelector(state => state.questions.addedQuestions);
 
+    const questionsId = addedQuestions.map(question => question.id);
+
+    console.log(questionsId)
 
     const onSubmit = async (values) => {
         // if (correctAnswerIndex === null) {
@@ -64,11 +69,13 @@ const CreateQuiz = ({ isOpen }) => {
         let language = values.language;
         let duration = values.duration;
         let description = values.description;
+        let owner = 8
 
         const quizData = {
-             title: quiz_title, description, level, language, duration, questions, subject
+             title: quiz_title, description, level, language, duration, questions: questionsId, subject, owner
         };
 
+        console.log(quizData);
         try {
             const responce = await createQuiz(quizData);
             console.log(responce)
@@ -79,7 +86,6 @@ const CreateQuiz = ({ isOpen }) => {
     }
     
 
-    const classNumber = useSelector(state => state.questions.class_number);
 
 
       const handleChangeFile = (newValue) => {
@@ -190,8 +196,10 @@ const CreateQuiz = ({ isOpen }) => {
                                     ))
                                 }
                             </Select> */}
-                            <select onChange={(e) => handleChange(e)}>
-                            {
+                            <select style={{width: "20%"}} onChange={(e) => handleChange(e)}>
+                                    <option  default>Выберите класс</option>
+                                    
+                                {
                                     classes?.map((item) => (
                                         <option value={item?.id} key={item?.number}>{item.number}</option>
                                     ))

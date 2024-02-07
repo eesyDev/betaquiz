@@ -1,6 +1,6 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import TextField from '@mui/material/TextField';
-import { RadioGroup, Radio, FormControlLabel, Button, Box, Checkbox } from '@mui/material';
+import {  FormControlLabel, Button, Box, Checkbox } from '@mui/material';
 import { useForm } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
 import { HiOutlinePencilSquare } from "react-icons/hi2";
@@ -8,7 +8,7 @@ import { RiDeleteBin2Line } from "react-icons/ri";
 import { FaRegEye } from "react-icons/fa";
 
 
-import { TagInput, SelectFromExistingQuestions, QuestionModal, TagComponent } from '../components';
+import { TagInput, SelectFromExistingQuestions, QuestionModal, EditQuestionModal } from '../components';
 import { useCreateQuestionMutation, useEditQuestionMutation, useGetAllExistingQuestionsQuery } from '../services/questonsApi';
 import { addQuestion, editQuestion, updateQuestion, removeQuestion } from '../redux/slices/questionsSlice';
 
@@ -23,10 +23,21 @@ const AddQuestions = () => {
     { title: '', correct: false },
     ]);
     const [isModalOpen, setIsModalOpen] = useState(false);
+    const [isModalEditOpen, setIsModalEditOpen] = useState(false);
     const [selectedQuestion, setSelectedQuestion] = useState(null);
     const [questions, setQuestions] = useState([]);
     const [subject, setSubject] = useState(1);
     const [classNumber, setClassNumber] = useState([3]);
+    const [addedFromLocalStorage, setAddedFromLocalStorage] = useState(false);
+
+    const [createQuestion] = useCreateQuestionMutation();
+    const [editQuestion] = useEditQuestionMutation();
+    const selectedTags = useSelector(state => state.tags.selectedTags);
+    const tagIds = selectedTags.map(tag => tag.id);
+
+    const addedQuestions = useSelector(state => state.questions.addedQuestions);
+    const editedQuestion = useSelector(state => state.questions.editedQuestion);
+    const classNumberState = useSelector(state => state.questions.class_number);
 
     const dispatch = useDispatch();
     const { data: availableQuestions } = useGetAllExistingQuestionsQuery();
@@ -36,42 +47,19 @@ const AddQuestions = () => {
       useEffect(() => {
         const storedSelectedQuestions = localStorage.getItem('selectedQuestions');
         if (storedSelectedQuestions) {
-          const parsedSelectedQuestions = JSON.parse(storedSelectedQuestions);
-      
-          // Фильтрация вопросов, которые есть в availableQuestions
-          const selectedQuestionsData = availableQuestions?.filter((question) =>
-            parsedSelectedQuestions?.includes(Number(question.id))
-          );
-
-          console.log(selectedQuestionsData)
-
-          selectedQuestionsData?.forEach((question) => {
-            dispatch(addQuestion(question));
-          });
+            const parsedSelectedQuestions = JSON.parse(storedSelectedQuestions);
+        
+            // Фильтрация вопросов, которые есть в availableQuestions и которых ещё нет в addedQuestions
+            const selectedQuestionsData = availableQuestions?.filter((question) =>
+                parsedSelectedQuestions?.includes(Number(question.id)) &&
+                !addedQuestions.some((addedQuestion) => addedQuestion.id === question.id)
+            );
+    
+            selectedQuestionsData?.forEach((question) => {
+                dispatch(addQuestion(question));
+            });
         }
-      }, [availableQuestions]);
-
-    const [createQuestion] = useCreateQuestionMutation();
-    const [editQuestion] = useEditQuestionMutation();
-    const selectedTags = useSelector(state => state.tags.selectedTags);
-    const tagIds = selectedTags.map(tag => tag.id);
-
-    const modalRef = useRef(null);
-
-    const addedQuestions = useSelector(state => state.questions.addedQuestions);
-    const editedQuestion = useSelector(state => state.questions.editedQuestion);
-    const classNumberState = useSelector(state => state.questions.class_number);
-
-    const handleEditQuestion = (question) => {
-        dispatch(editQuestion(question));
-        setCurrentQuestion(question.title);
-        setCurrentAnswers(question.question_answers);
-        setSubject(question.subject);
-    };
-
-    const handleCancelEdit = () => {
-        dispatch(editQuestion(null));
-    };
+    }, [availableQuestions, addedQuestions, dispatch]);
 
     const handleUpdateQuestion = async (id) => {
         const data = {
@@ -82,7 +70,6 @@ const AddQuestions = () => {
         try {
             const result = await editQuestion(id, data);
             dispatch(updateQuestion(result.data));
-            handleCancelEdit();
         } catch (error) {
             console.error('Ошибка при обновлении вопроса', error);
         }
@@ -139,7 +126,7 @@ const AddQuestions = () => {
             question_answers: [...currentAnswers],
             tags: [...tagIds],
             subject: subject,
-            class_number: classNumberState,
+            class_number: [...classNumberState],
             file: questionImage
         };
 
@@ -167,6 +154,16 @@ const AddQuestions = () => {
         setIsModalOpen(false);
       };
 
+      const handleOpenEditModal = (question) => {
+        setSelectedQuestion(question);
+        setIsModalEditOpen(true);
+      };
+    
+      const handleCloseEditModal = () => {
+        setSelectedQuestion(null);
+        setIsModalEditOpen(false);
+      };
+
 
 
     return (
@@ -179,7 +176,7 @@ const AddQuestions = () => {
                             <div className='question-item-title'>{question?.title}</div>
                             <div className="question-item-bottom">
                                 <div className="question-item-bottom-left">
-                                    <button className='btn--rounded' onClick={() => handleEditQuestion(question.id)}><HiOutlinePencilSquare /></button>
+                                    <button className='btn--rounded' onClick={() => handleOpenEditModal(question)}><HiOutlinePencilSquare /></button>
                                     <button className='btn--rounded' onClick={() => handleRemoveQuestion(question.id)}><RiDeleteBin2Line /></button>
                                 </div>
                                 <a className='btn--transparent' onClick={() => handleOpenModal(question)}><FaRegEye /></a>
@@ -192,6 +189,11 @@ const AddQuestions = () => {
                         <QuestionModal isModalOpen={isModalOpen} handleCloseModal={handleCloseModal} selectedQuestion={selectedQuestion}/>
                     )
                 }
+                {
+                    isModalEditOpen && (
+                        <EditQuestionModal isModalOpen={isModalEditOpen} handleCloseModal={handleCloseEditModal} selectedQuestion={selectedQuestion}/>
+                    )
+                }
                 {editedQuestion && (
                     <div>
                         <TextField
@@ -201,7 +203,7 @@ const AddQuestions = () => {
                             fullWidth
                         />
                         <Button onClick={handleUpdateQuestion}>Обновить вопрос</Button>
-                        <Button onClick={handleCancelEdit}>Отмена</Button>
+                        <Button >Отмена</Button>
                     </div>
                 )}
             </div>
@@ -212,28 +214,38 @@ const AddQuestions = () => {
 
             {
                 qForm === 'new-question' ? (
-
                     <div className="new-queston">
+                    <h3 className="h3">Добавить новый вопрос</h3>
+                        <div className="form-row">
+                        <h4 className="h4">Введите вопрос</h4>
                         <TextField
                             label="Введите вопрос"
                             value={currentQuestion}
                             onChange={(e) => setCurrentQuestion(e.target.value)}
                             fullWidth
                         />
-                        <TagInput />
-                        <input
-                            type="file"
-                            onChange={(e) => {
-                                const file = e.target.files[0];
-                                const reader = new FileReader();
-                                reader.onloadend = () => {
-                                    setQuestionImage(reader.result);
-                                };
-                                if (file) {
-                                    reader.readAsDataURL(file);
-                                }
-                            }}
-                        />
+                        </div>
+                        <div className="form-row">
+                            <h4 className="h4">Добавить теги</h4>
+                            <TagInput />
+                        </div>
+                        <div className="form-row">
+                            <h4 className="h4">Добавить изображение вопроса</h4>
+                            <input
+                                type="file"
+                                onChange={(e) => {
+                                    const file = e.target.files[0];
+                                    const reader = new FileReader();
+                                    reader.onloadend = () => {
+                                        setQuestionImage(reader.result);
+                                    };
+                                    if (file) {
+                                        reader.readAsDataURL(file);
+                                    }
+                                }}
+                            />
+                        </div>
+                        
                         {questionImage && (
                             <img src={questionImage} alt="Question" style={{ maxWidth: '100%', maxHeight: '200px', width: '400px', objectFit: 'cover' }} />
                         )}

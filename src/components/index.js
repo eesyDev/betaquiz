@@ -10,3 +10,4 @@ export { default as TagInput } from './Tags';
 export { default as AddQuestions } from './AddQuestions';
 export { default as SelectFromExistingQuestions } from './SelectFromExistingQuestions';
 export { default as QuestionModal } from './QuestionModal';
+export { default as EditQuestionModal } from './EditQuestionModal';

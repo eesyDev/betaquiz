@@ -48,6 +48,7 @@ function TagInput() {
   
     // setCurrentTags('');
   };
+  const suggestion = data?.map((tag) => ({ id: String(tag.id), text: tag.title }))
   
   return (
     <div>
@@ -55,6 +56,8 @@ function TagInput() {
         tags={tags?.map(tag => ({ id: String(tag.id), text: tag.text }))}
         handleDelete={handleDelete}
         handleAddition={handleAddition}
+        suggestions={suggestion}
+        placeholder="Введите теги вопроса"
       />
     </div>
   );
