@@ -46,6 +46,7 @@ const Classes = ({isOpen, isCalendarOpen}) => {
 	const classesWithGroups = linkClassesWithGroups(lessons, groups);
 	  
 	const events = lessons.map(lesson => ({
+		id: lesson.id,
 		Subject: lesson.topic,
 		StartTime: new Date(lesson.time_from),
 		EndTime: new Date(lesson.time_to)
