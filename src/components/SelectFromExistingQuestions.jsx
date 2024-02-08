@@ -24,18 +24,24 @@ const SelectFromExistingQuestions = ({ onSelect }) => {
   };
 
   const handleAddQuestions = () => {
+    // существующие выбранные вопросы из локального хранилища
+    const existingSelectedQuestions = JSON.parse(localStorage.getItem('selectedQuestions')) || [];
+
+    // Фильтруем новые выбранные вопросы, чтобы убрать уже существующие
+    const newSelectedQuestions = selectedQuestions.filter(questionId => !existingSelectedQuestions.includes(questionId));
+    // Объединяем существующие выбранные вопросы с новыми выбранными вопросами
+    const updatedSelectedQuestions = [...existingSelectedQuestions, ...newSelectedQuestions];
+      // Сохраняем обновленные выбранные вопросы в локальном хранилище
+    localStorage.setItem('selectedQuestions', JSON.stringify(updatedSelectedQuestions));
+
     const selectedQuestionsData = availableQuestions.filter((question) =>
-      selectedQuestions.includes(question.id)
+      newSelectedQuestions.includes(question.id)
     );
     selectedQuestionsData.forEach((question) => {
       dispatch(addQuestion(question));
     });
-    localStorage.setItem('selectedQuestions', JSON.stringify(selectedQuestions));
 
     setSelectedQuestions([]);
-    // console.log(selectedQuestionsData)
-    // dispatch(addQuestion(selectedQuestionsData));
-    // setSelectedQuestions([]);
   };
 
   return (

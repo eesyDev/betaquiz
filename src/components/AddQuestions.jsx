@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import TextField from '@mui/material/TextField';
-import {  FormControlLabel, Button, Box, Checkbox } from '@mui/material';
+import { FormControlLabel, Button, Box, Checkbox } from '@mui/material';
 import { useForm } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
 import { HiOutlinePencilSquare } from "react-icons/hi2";
@@ -25,10 +25,7 @@ const AddQuestions = () => {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [isModalEditOpen, setIsModalEditOpen] = useState(false);
     const [selectedQuestion, setSelectedQuestion] = useState(null);
-    const [questions, setQuestions] = useState([]);
     const [subject, setSubject] = useState(1);
-    const [classNumber, setClassNumber] = useState([3]);
-    const [addedFromLocalStorage, setAddedFromLocalStorage] = useState(false);
 
     const [createQuestion] = useCreateQuestionMutation();
     const [editQuestion] = useEditQuestionMutation();
@@ -42,19 +39,18 @@ const AddQuestions = () => {
     const dispatch = useDispatch();
     const { data: availableQuestions } = useGetAllExistingQuestionsQuery();
 
-
-      // Загрузка сохраненных выбранных вопросов при перезагрузке компонента
-      useEffect(() => {
+    // Загрузка сохраненных выбранных вопросов при перезагрузке компонента
+    useEffect(() => {
         const storedSelectedQuestions = localStorage.getItem('selectedQuestions');
         if (storedSelectedQuestions) {
             const parsedSelectedQuestions = JSON.parse(storedSelectedQuestions);
-        
+
             // Фильтрация вопросов, которые есть в availableQuestions и которых ещё нет в addedQuestions
             const selectedQuestionsData = availableQuestions?.filter((question) =>
                 parsedSelectedQuestions?.includes(Number(question.id)) &&
                 !addedQuestions.some((addedQuestion) => addedQuestion.id === question.id)
             );
-    
+
             selectedQuestionsData?.forEach((question) => {
                 dispatch(addQuestion(question));
             });
@@ -107,6 +103,11 @@ const AddQuestions = () => {
             return;
         }
 
+        if (!classNumberState) {
+            alert('Введите номер класса');
+            return;
+        }
+
         if (isAnyAnswerEmpty) {
             alert('Введите все варианты ответа');
             return;
@@ -126,7 +127,7 @@ const AddQuestions = () => {
             question_answers: [...currentAnswers],
             tags: [...tagIds],
             subject: subject,
-            class_number: [...classNumberState],
+            class_number: [classNumberState],
             file: questionImage
         };
 
@@ -134,11 +135,14 @@ const AddQuestions = () => {
             const result = await createQuestion(data);
             dispatch(addQuestion({ ...result.data }));
 
+            // Добавляем новый вопрос в localStorage
+            const existingQuestions = JSON.parse(localStorage.getItem('selectedQuestions')) || [];
+            const updatedQuestions = [...existingQuestions, result.data.id];
+            localStorage.setItem('selectedQuestions', JSON.stringify(updatedQuestions));
 
         } catch (error) {
             console.error("Ошибка при создании вопроса", error);
         }
-        setQuestions((prevQuestions) => [...prevQuestions, data]);
         setCurrentQuestion('');
         setCurrentAnswers(['', '', '', '']);
         setQuestionImage(null);
@@ -147,22 +151,22 @@ const AddQuestions = () => {
     const handleOpenModal = (question) => {
         setSelectedQuestion(question);
         setIsModalOpen(true);
-      };
-    
-      const handleCloseModal = () => {
+    };
+
+    const handleCloseModal = () => {
         setSelectedQuestion(null);
         setIsModalOpen(false);
-      };
+    };
 
-      const handleOpenEditModal = (question) => {
+    const handleOpenEditModal = (question) => {
         setSelectedQuestion(question);
         setIsModalEditOpen(true);
-      };
-    
-      const handleCloseEditModal = () => {
+    };
+
+    const handleCloseEditModal = () => {
         setSelectedQuestion(null);
         setIsModalEditOpen(false);
-      };
+    };
 
 
 
@@ -186,12 +190,12 @@ const AddQuestions = () => {
                 }
                 {
                     isModalOpen && (
-                        <QuestionModal isModalOpen={isModalOpen} handleCloseModal={handleCloseModal} selectedQuestion={selectedQuestion}/>
+                        <QuestionModal isModalOpen={isModalOpen} handleCloseModal={handleCloseModal} selectedQuestion={selectedQuestion} />
                     )
                 }
                 {
                     isModalEditOpen && (
-                        <EditQuestionModal isModalOpen={isModalEditOpen} handleCloseModal={handleCloseEditModal} selectedQuestion={selectedQuestion}/>
+                        <EditQuestionModal isModalOpen={isModalEditOpen} handleCloseModal={handleCloseEditModal} selectedQuestion={selectedQuestion} />
                     )
                 }
                 {editedQuestion && (
@@ -215,15 +219,15 @@ const AddQuestions = () => {
             {
                 qForm === 'new-question' ? (
                     <div className="new-queston">
-                    <h3 className="h3">Добавить новый вопрос</h3>
+                        <h3 className="h3">Добавить новый вопрос</h3>
                         <div className="form-row">
-                        <h4 className="h4">Введите вопрос</h4>
-                        <TextField
-                            label="Введите вопрос"
-                            value={currentQuestion}
-                            onChange={(e) => setCurrentQuestion(e.target.value)}
-                            fullWidth
-                        />
+                            <h4 className="h4">Введите вопрос</h4>
+                            <TextField
+                                label="Введите вопрос"
+                                value={currentQuestion}
+                                onChange={(e) => setCurrentQuestion(e.target.value)}
+                                fullWidth
+                            />
                         </div>
                         <div className="form-row">
                             <h4 className="h4">Добавить теги</h4>
@@ -245,7 +249,7 @@ const AddQuestions = () => {
                                 }}
                             />
                         </div>
-                        
+
                         {questionImage && (
                             <img src={questionImage} alt="Question" style={{ maxWidth: '100%', maxHeight: '200px', width: '400px', objectFit: 'cover' }} />
                         )}

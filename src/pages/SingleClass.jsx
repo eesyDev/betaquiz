@@ -161,9 +161,6 @@ const SingleClass = ({isOpen}) => {
 									<li>{student.name}</li>
 								))
 							}
-							<li>Дамир Қайратұлы</li>
-							<li>Дуйсен Сара (11 лет +6мес)</li>
-							<li>Linda Concao</li>
 						</ol>
 					</div>
 				</div>

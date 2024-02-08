@@ -12,7 +12,7 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import { Header, Sidebar, Footer, AddQuestions } from '../components';
 import { useGetGroupNumberForLessonForQuizQuery, useCreateQuizMutation, useGetSubjectLessonForQuizQuery } from '../services/questonsApi';
-import { addClassNumber } from '../redux/slices/questionsSlice';
+import { addClassNumber, clearAddedQuestions } from '../redux/slices/questionsSlice';
 
 const CreateQuiz = ({ isOpen }) => {
     const firstMathfieldRef = useRef();
@@ -29,7 +29,7 @@ const CreateQuiz = ({ isOpen }) => {
     const dispatch = useDispatch();
 
 
-    const { register, handleSubmit, setError: setFormError, formState: { errors } } = useForm();
+    const { register, handleSubmit, reset, setError: setFormError, formState: { errors } } = useForm();
 
     const [createQuiz] = useCreateQuizMutation();
     const { data: subjects } = useGetSubjectLessonForQuizQuery()
@@ -44,13 +44,7 @@ const CreateQuiz = ({ isOpen }) => {
 
     const questionsId = addedQuestions.map(question => question.id);
 
-    console.log(questionsId)
-
     const onSubmit = async (values) => {
-        // if (correctAnswerIndex === null) {
-        //     alert('Выберите правильный вариант ответа');
-        //     return;
-        //   }
         const newQuestion = {
             question: currentQuestion,
             options: [...currentOptions],
@@ -58,10 +52,6 @@ const CreateQuiz = ({ isOpen }) => {
             image: questionImage
           };
         setQuestions((prevQuestions) => [...prevQuestions, newQuestion]);
-        // setCurrentQuestion('');
-        // setCurrentOptions(['', '', '', '']);
-        // setQuestionImage(null);
-        // setCorrectAnswerIndex(null);
 
         let quiz_title = values.title;
         let subject = values.subject;
@@ -74,18 +64,18 @@ const CreateQuiz = ({ isOpen }) => {
         const quizData = {
              title: quiz_title, description, level, language, duration, questions: questionsId, subject, owner
         };
-
-        console.log(quizData);
         try {
             const responce = await createQuiz(quizData);
-            console.log(responce)
+            alert(`Квиз ${responce.data.title} успешно создан`);
+            dispatch(clearAddedQuestions());
+             // Очищаем storedSelectedQuestions в localStorage
+            localStorage.removeItem('selectedQuestions');
+            reset();
         } catch(err) {
             console.error(err)
-        }
-        
+            alert(`Ошибка при создании квиза ${err}`);
+        } 
     }
-    
-
 
 
       const handleChangeFile = (newValue) => {
@@ -108,8 +98,6 @@ const CreateQuiz = ({ isOpen }) => {
       useEffect(() => {
         dispatch(addClassNumber(classNum))
       }, [classNum])
-
-      console.log(classNumber)
       
   return (
     <div className={isOpen ? 'content with-sidebar create-quiz' : 'content with-sidebar create-quiz m-less'}>
@@ -214,7 +202,8 @@ const CreateQuiz = ({ isOpen }) => {
                             helperText={errors.title?.message}
                             fullWidth
                             className="input"
-                            {...register('title', { required: 'Введите заголовок' })}
+                            {...register('title', { required: 'Введите заголовок', maxLength: { value: 50, message: 'Максимальная длина 50 символов' }  })}
+                            
                         />
                         <TextField
                             label="Описание"
@@ -232,7 +221,7 @@ const CreateQuiz = ({ isOpen }) => {
             </div>
             <div className="keyboard">
             <div>
-            <div>
+            <div className='inner'>
                 <p style={{ fontSize: "2rem" }}>
                 Input with all the keyboard keys :
                 </p>

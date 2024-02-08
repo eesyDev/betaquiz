@@ -27,10 +27,13 @@ const questionsSlice = createSlice({
     },
     addClassNumber: (state, action) => {
         state.class_number = action.payload
-    }
+    },
+    clearAddedQuestions: (state) => {
+      state.addedQuestions = [];
+  }
   },
 });
 
-export const { addQuestion, editQuestion, updateQuestion, removeQuestion, addClassNumber } = questionsSlice.actions;
+export const { addQuestion, editQuestion, updateQuestion, removeQuestion, addClassNumber, clearAddedQuestions } = questionsSlice.actions;
 
 export default questionsSlice.reducer;
