@@ -1,5 +1,6 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { useLocation } from'react-router-dom';
 import { Link } from 'react-router-dom';
 import { LuCalendarDays } from "react-icons/lu";
 import { FiLogOut } from "react-icons/fi";
@@ -16,6 +17,9 @@ const Header = () => {
 	const isLoggedIn = useSelector((state) => state.authSlice.isLoggedIn);
 
 	const dispatch = useDispatch();
+	const location = useLocation();
+
+	console.log(location.pathname)
 
 	const handleClick = () => {
 	  dispatch(toggleBurger());
@@ -42,12 +46,15 @@ const Header = () => {
 			<div className="burger" onClick={handleClick}>
 			<RxHamburgerMenu />
 			</div>
-			<div className="header__date" onClick={handleCalendarClick}>
-			<div className="header__date-icon">
-				<LuCalendarDays />
-			</div>
-			<span>21.02.2024</span>
-			</div>
+			{
+				location.pathname === '/classes' &&
+				<div className="header__date" onClick={handleCalendarClick}>
+				<div className="header__date-icon">
+					<LuCalendarDays />
+				</div>
+				<span>21.02.2024</span>
+				</div>
+			}
 		</div>
 	  	
         <div className="header__user">

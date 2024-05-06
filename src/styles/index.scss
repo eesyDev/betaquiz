@@ -1,9 +1,10 @@
 
 @import 'calendar.scss';
+@import 'skeletons.scss';
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&family=Nunito+Sans:ital,opsz,wght@0,6..12,200;0,6..12,300;0,6..12,400;0,6..12,500;0,6..12,600;0,6..12,700;0,6..12,800;0,6..12,900;0,6..12,1000;1,6..12,200;1,6..12,300;1,6..12,400;1,6..12,500;1,6..12,600;1,6..12,700;1,6..12,800;1,6..12,900;1,6..12,1000&display=swap');
 * {
     box-sizing: border-box;
-    font-family: 'Nunito Sans';
+    font-family: 'Inter';
     font-weight: 400;
 
 }
@@ -15,6 +16,8 @@
     --yellow: #FDB954;
     --blue: #90CAF9;
     --text-gray: #9E9E9E;
+    --secondary-bg: #dadada;
+    --primary-bg: #060606;
 }
 
 body {
@@ -22,7 +25,7 @@ body {
     font-weight: 400;
     margin: 0;
     padding: 0;
-    background-color: #EEF2F6;
+    background-color: #f6f6f6;
 }
 
 a {
@@ -87,7 +90,7 @@ img, svg {
     cursor: pointer;
 }
 .btn--primary {
-    background-color: #000;
+    background-color: var(--primary-bg);
     color: #fff;
     &:hover {
         background-color: rgba(0,0,0,.8);
@@ -180,8 +183,8 @@ img, svg {
 }
 
 h1, .h1 {
-    font-size: 50px;
-    font-weight: 600;
+    font-size: 2.2em;
+    font-weight: 500;
     margin: 0;
     text-align: left;
 }
@@ -239,8 +242,9 @@ h3, .h3 {
         gap: 20px;
     }
     &__date {
-        background-color: var(--light-yellow);
-        border-radius: 10px;
+        background-color: var(--secondary-bg);
+        color: #000;
+        border-radius: 4px;
         padding: 0 20px;
         height: 45px;
         display: flex;
@@ -249,13 +253,14 @@ h3, .h3 {
         gap: 10px;
         cursor: pointer;
         &-icon {
-            color: var(--yellow);
-            font-size: 24px;
+            color: #000;
+            font-size: 22px;
         }
     }
     &__user {
-        background-color: #E3F2FD;
-        border-radius: 10px;
+        background-color: var(--primary-bg);
+        color: #fff;
+        border-radius: 4px;
         padding: 0 20px;
         height: 45px;
         cursor: pointer;
@@ -320,9 +325,9 @@ h3, .h3 {
 .burger {
     width: 45px;
     height: 45px;
-    background-color: var(--lilac);
-    border-radius: 8px;
-    color: #673AB7;
+    background-color:  var(--primary-bg);
+    border-radius: 4px;
+    color: #fff;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -377,7 +382,7 @@ h3, .h3 {
             a {
                 padding: 12px;
                 transition: all .2s ease-in-out;
-                border-radius: 10px;
+                border-radius: 4px;
                 display: flex;
                 align-items: center;
                 gap: 15px;
@@ -389,8 +394,8 @@ h3, .h3 {
                     background-color: #efefef;
                 }
                 &.active {
-                    background-color: var(--lilac);
-                    color: var(--violet)
+                    background-color: var(--secondary-bg);
+                    // color: var(--violet)
                 }
             }
             span {
@@ -478,12 +483,17 @@ h3, .h3 {
 .single-class {
     &__info {
         margin-top: 30px;
-        padding-left: 50px;
-        padding-right: 50px;
+        padding-left: 30px;
+        padding-right: 30px;
     }
     &__list-title {
-        font-size: 24px;
+        font-size: 13px;
         margin-top: 20px;
+        color: #a5a5a5;
+        text-transform: uppercase;
+    }
+    &__group {
+        margin-top: 40px;
     }
     &__top {
         ul {
@@ -517,10 +527,11 @@ h3, .h3 {
     &__heading {
         display: flex;
         gap: 100px;
-        font-size: 24px;
+        font-size: 22px;
         align-items: center;
         padding: 15px;
-        border-radius: 10px;
+        border-radius: 4px;
+        background-color: #f0f0f0;
         &.blue {
             background-color: var(--blue);
         }
@@ -529,7 +540,7 @@ h3, .h3 {
             margin-top: 40px;
         }
         svg {
-            font-size: 50px;
+            font-size: 1.4em;
         }
     }
     .pupil {
@@ -561,7 +572,7 @@ h3, .h3 {
 .quiz-card {
     background-color: #fff;
     padding: 20px;
-    border-radius: 12px;
+    border-radius: 6px;
     text-align: center;
     &__top {
         display: flex;
@@ -572,7 +583,7 @@ h3, .h3 {
             align-items: center;
             padding: 5px 10px;
             border: 1px solid rgba(0, 0, 0, 0.2);
-            border-radius: 10px;
+            border-radius: 4px;
         }
         .grade-color {
             width: 10px;
@@ -646,7 +657,7 @@ h3, .h3 {
 
 .group-card {
     padding: 20px;
-    border-radius: 12px;
+    border-radius: 6px;
     background-color: #fff;
 }
 
@@ -687,7 +698,7 @@ h3, .h3 {
 .filter {
     background-color: #fff;
     padding: 20px;
-    border-radius: 12px;
+    border-radius: 6px;
     display: flex;
     gap: 20px;
     justify-content: flex-end;
@@ -695,7 +706,7 @@ h3, .h3 {
     select {
         border: 1px solid rgba(0, 0, 0, 0.2);
         padding: 15px 20px;
-        border-radius: 7px;
+        border-radius: 4px;
     }
 }
 
@@ -734,7 +745,7 @@ h3, .h3 {
     .question-item {
         background-color: #fff;
         padding: 20px;
-        border-radius: 10px;
+        border-radius: 4px;
         width: calc(25% - 15px);
         text-align: left;
         position: relative;
@@ -784,7 +795,7 @@ h3, .h3 {
     }
     &-content {
         background-color: #fff;
-        border-radius: 10px;
+        border-radius: 4px;
         padding: 40px;
         left: 50%;
         top: 50%;

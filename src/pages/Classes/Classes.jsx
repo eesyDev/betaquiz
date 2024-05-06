@@ -1,10 +1,11 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { useGetLessonsQuery, useGetTeacherLessonsQuery } from '../services/lessonsApi';
-import { useGetTeacherGroupsQuery } from '../services/teacherGroupApi';
+import { useGetLessonsQuery, useGetTeacherLessonsQuery } from '../../services/lessonsApi';
+import { useGetTeacherGroupsQuery } from '../../services/teacherGroupApi';
 
-import { Header, Sidebar, Calendar, Footer } from '../components';
-import { scheduleData } from '../data/data';
+import { Header, Sidebar, Calendar, Footer } from '../../components';
+import { scheduleData } from '../../data/data';
+import ClassSkeleton from './Skeleton';
 
 
 const Classes = ({isOpen, isCalendarOpen}) => {
@@ -12,8 +13,8 @@ const Classes = ({isOpen, isCalendarOpen}) => {
 	const [groups, setGroups] = useState([]);
 
 	const reqData = {status: 0}
-	const { data: lessonsData } = useGetTeacherLessonsQuery(reqData);
-	const { data: groupsData } = useGetTeacherGroupsQuery();
+	const { data: lessonsData, isLoading: isLoadingLessons } = useGetTeacherLessonsQuery(reqData);
+	const { data: groupsData, isLoading: isLoadingGroups } = useGetTeacherGroupsQuery();
 	
   
 	useEffect(() => {
@@ -74,6 +75,9 @@ const Classes = ({isOpen, isCalendarOpen}) => {
 									<span className="class">Урок</span>
 								</li>
 								{
+									isLoadingLessons ? 
+										[...Array(8)].map((item, index) => <ClassSkeleton/>)
+										: 
 									classesWithGroups?.map((lesson, index) => {
 										const timeFromDate = new Date(lesson?.time_from);
 										const timeToDate = new Date(lesson?.time_to);
@@ -90,7 +94,7 @@ const Classes = ({isOpen, isCalendarOpen}) => {
 												<Link to={`/classes/${lesson.id}`}>
 													<span className="date">{formattedDateFrom}</span>
 													<span className="time">{formattedTimeFromTo}</span>
-													<span className="group">{lesson?.groups[0]?.name}</span>
+													<span className="group">{lesson?.groups[0]?.name ? lesson?.groups[0]?.name : '-'}</span>
 													<span className="class">{lesson?.topic}</span>
 												</Link>
 											</li>

@@ -126,10 +126,10 @@ const SingleClass = ({isOpen}) => {
         <div className="container">
             <Header/>
             <div className="inner">
-              	<h1 className='h1'>{`Урок ${classesWithGroups[0]?.groups[0]?.name}`}</h1>
+              	<h1 className='h1'>{`Урок ${classesWithGroups[0]?.groups[0]?.name ? classesWithGroups[0]?.groups[0]?.name : '-'}`}</h1>
 				<div className="single-class__info layer">
 					<div className="single-class__top">
-						<div className="single-class__heading blue">
+						<div className="single-class__heading">
 							<IoMdInformationCircleOutline /> <span>Информация об уроке</span>
 						</div>
 						
@@ -146,14 +146,14 @@ const SingleClass = ({isOpen}) => {
 							<li className="single-class__list-item">
 								<span className="date">{formattedDateFrom}</span>
 								<span className="time">{formattedTimeFromTo}</span>
-								<span className="group">{`${classesWithGroups[0]?.groups[0]?.name}`}</span>
+								<span className="group">{`${classesWithGroups[0]?.groups[0]?.name ? classesWithGroups[0]?.groups[0]?.name : '-'}`}</span>
 								<span className="class">{classesWithGroups[0]?.topic}</span>
 							</li>
 						</ul>
 					</div>
 					<div className="single-class__group">
-						<div className="single-class__heading lilac">
-							<GrGroup /> <span>Группа {`${classesWithGroups[0]?.groups[0]?.name}`}</span>
+						<div className="single-class__heading">
+							<GrGroup /> <span>Группа {`${classesWithGroups[0]?.groups[0]?.name ? classesWithGroups[0]?.groups[0]?.name : '-'}`}</span>
 						</div>
 						<ol className="pupil">
 							{

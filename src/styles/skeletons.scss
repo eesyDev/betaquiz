@@ -1,0 +1,13 @@
+.skeleton {
+    background-color: #fff;
+    border: 1px solid #dedede;
+    border-radius: 5px;
+    overflow: hidden;
+    margin-bottom: 30px;
+    &-row {
+        display: flex;
+        justify-content: space-between;
+        padding: 10px 30px;
+        align-items: center;
+    }
+}
