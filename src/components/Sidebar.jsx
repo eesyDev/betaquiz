@@ -7,6 +7,7 @@ import { LuClipboardList } from "react-icons/lu";
 import { MdOutlineQuiz } from "react-icons/md";
 import { AiOutlineQuestionCircle } from "react-icons/ai";
 import { IoMdAddCircleOutline } from "react-icons/io";
+import { RiQuestionFill } from 'react-icons/ri';
 
 import logo from '../img/logo.svg';
 import logoCollapsed from '../img/BQ.svg';
@@ -30,23 +31,28 @@ const Sidebar = ({ isAddingQuiz }) => {
           <NavLink 
           to='/classes'
           className={({ isActive }) => (isActive ? activeLink : normalLink)}>
-            <IoBookOutline/><span className={isOpen ? '' : 'collapsed'}>Classes</span>
+            <IoBookOutline/><span className={isOpen ? '' : 'collapsed'}>Уроки</span>
           </NavLink>
           <NavLink 
           to="/mygroups"
           className={({ isActive }) => (isActive ? activeLink : normalLink)}>
-            <GrGroup/><span className={isOpen ? '' : 'collapsed'}>My Groups</span>
+            <GrGroup/><span className={isOpen ? '' : 'collapsed'}>Мои группы</span>
+          </NavLink>
+          <NavLink 
+          to="/questions/all-questions"
+          className={({ isActive }) => (isActive ? activeLink : normalLink)}>
+            <RiQuestionFill/><span className={isOpen ? '' : 'collapsed'}>Вопросы</span>
           </NavLink>
           <NavLink 
           to="/results"
           className={({ isActive }) => (isActive ? activeLink : normalLink)}>
-            <LuClipboardList/><span className={isOpen ? '' : 'collapsed'}>Results</span>
+            <LuClipboardList/><span className={isOpen ? '' : 'collapsed'}>Результаты</span>
           </NavLink>
           <NavLink 
           to="/quizes"
           className={({ isActive }) => (isActive ? activeLink : normalLink)}>
             <MdOutlineQuiz/>
-            <span className={isOpen ? '' : 'collapsed'}>Quizes</span>
+            <span className={isOpen ? '' : 'collapsed'}>Квизы</span>
           </NavLink>
         </div>
         { isAddingQuiz && 

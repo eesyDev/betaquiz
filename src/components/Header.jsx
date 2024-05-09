@@ -19,8 +19,6 @@ const Header = () => {
 	const dispatch = useDispatch();
 	const location = useLocation();
 
-	console.log(location.pathname)
-
 	const handleClick = () => {
 	  dispatch(toggleBurger());
 	};
@@ -39,6 +37,8 @@ const Header = () => {
 		}
 	  }
 
+	  const token = window.localStorage.getItem('token')?.split(' ')[1];
+
   return (
     <header className='header'>
       <div className="wrapper">
@@ -56,21 +56,22 @@ const Header = () => {
 				</div>
 			}
 		</div>
-	  	
-        <div className="header__user">
-			{
-				!isLoggedIn ? 
-				<Link to='/login' className="header__user-login">
-					<span>Войти</span>
-					<div className="icon"><FiLogIn/></div>
-				</Link> : 
-				<div className="header__user-logout" onClick={onClickLogout}>
-					<span>Выйти</span>
-					<div className="icon"><FiLogOut/></div>
-				</div>
-			}
-        </div>
-
+		<div className='header__right'>
+			<Link to={isLoggedIn ? `/account/${token}` : '/login'} className='btn btn--outlined-secondary'>Account</Link>
+			<div className="header__user">
+				{
+					!isLoggedIn ? 
+					<Link to='/login' className="header__user-login">
+						<span>Войти</span>
+						<div className="icon"><FiLogIn/></div>
+					</Link> : 
+					<div className="header__user-logout" onClick={onClickLogout}>
+						<span>Выйти</span>
+						<div className="icon"><FiLogOut/></div>
+					</div>
+				}
+			</div>
+			</div>
       </div>
     </header>
   )

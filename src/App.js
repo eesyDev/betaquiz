@@ -4,7 +4,7 @@ import { Routes, Route } from 'react-router-dom';
 import { registerLicense } from '@syncfusion/ej2-base';
 import { useSelector } from 'react-redux';
 
-import { Home, Login, Groups, Classes, Results, Quizes, SingleClass, CreateQuiz, SingleGroup } from './pages';
+import { Home, Login, Groups, Classes, Results, Quizes, SingleClass, CreateQuiz, SingleGroup, Questions, Account } from './pages';
 import './App.css';
 import { setAuthState } from './redux/slices/authSlice';
 
@@ -35,6 +35,8 @@ function App() {
         <Route path="/results" element={<Results isOpen={isOpen}/>} />
         <Route path="/quizes" element={<Quizes isOpen={isOpen}/>} />
         <Route path="/create-quiz" element={<CreateQuiz isOpen={isOpen}/>} />
+        <Route path="/questions/all-questions" element={<Questions isOpen={isOpen}/>} />
+        <Route path="/account/:accountId" element={<Account isOpen={isOpen}/>}/>
       </Routes>
     </div>
   );

@@ -1,1 +1,1 @@
-.skeleton{background-color:#fff;border:1px solid #dedede;border-radius:5px;overflow:hidden;margin-bottom:30px}.skeleton-row{display:flex;justify-content:space-between;padding:10px 30px;align-items:center}
+.skeleton{background-color:#fff;border:1px solid #dedede;border-radius:5px;overflow:hidden;margin-bottom:30px}.skeleton-row{display:flex;justify-content:space-between;padding:10px 30px;align-items:center}.skeleton-row-sm{display:flex;justify-content:flex-start;padding:5px 10px;align-items:center;gap:10px}

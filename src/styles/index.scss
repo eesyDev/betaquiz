@@ -16,8 +16,8 @@
     --yellow: #FDB954;
     --blue: #90CAF9;
     --text-gray: #9E9E9E;
-    --secondary-bg: #dadada;
-    --primary-bg: #060606;
+    --secondary-bg: #eef1f5;
+    --primary-bg: #201cff;
 }
 
 body {
@@ -25,7 +25,8 @@ body {
     font-weight: 400;
     margin: 0;
     padding: 0;
-    background-color: #f6f6f6;
+    background-color: #eef1f5;
+    font-size: 14px;
 }
 
 a {
@@ -43,7 +44,7 @@ select {
     border: 1px solid rgb(151, 195, 240);
     border-radius: 6px;
     color: rgb(11, 107, 203);
-    font-size: 16px;
+    font-size: 14px;
     font-family: 'Inter';
     padding: 0 12px;
 }
@@ -69,6 +70,9 @@ img, svg {
         flex: 1
     }
 }
+.w-50 {
+    width: 50%;
+}
 .g-20 {
     gap: 20px;
 }
@@ -84,10 +88,13 @@ img, svg {
     border: none;
     outline: none;
     font-size: 17px;
-    border-radius: 10px;
+    border-radius: 4px;
     padding: 0 20px;
     transition: all .2s ease-in-out;
     cursor: pointer;
+    &.hidden {
+        display: none;
+    }
 }
 .btn--primary {
     background-color: var(--primary-bg);
@@ -104,10 +111,11 @@ img, svg {
     }
 }
 .btn--outlined-secondary {
-    background-color: var(--secondary);
-    color: var(--secondary);
+    background-color: transparent;
+    border: 1px solid var(--primary-bg);
+    color: var(--primary-bg);
     &:hover {
-        background-color: rgba(0,35,255,.8);
+        background-color: rgba(0,35,255,.3);
     }
 }
 .btn--green {
@@ -214,7 +222,7 @@ h3, .h3 {
 .layer {
     background-color: #fff;
     border-radius: 12px;
-    padding: 30px;
+    padding: 20px;
 }
 .inner {
     padding-left: 30px;
@@ -233,13 +241,20 @@ h3, .h3 {
 .header {
     background-color: #fff;
     width: 100%;
-    padding: 20px;
+    padding: 10px 20px;
     .wrapper {
         justify-content: space-between;
     }
     &__left {
         display: flex;
         gap: 20px;
+    }
+    &__right {
+        display: flex;
+        gap: 20px;
+        .btn {
+            height: 40px;
+        }
     }
     &__date {
         background-color: var(--secondary-bg);
@@ -262,7 +277,7 @@ h3, .h3 {
         color: #fff;
         border-radius: 4px;
         padding: 0 20px;
-        height: 45px;
+        height: 40px;
         cursor: pointer;
         > div, a {
             display: flex;
@@ -323,8 +338,8 @@ h3, .h3 {
 }
 
 .burger {
-    width: 45px;
-    height: 45px;
+    width: 40px;
+    height: 40px;
     background-color:  var(--primary-bg);
     border-radius: 4px;
     color: #fff;
@@ -584,6 +599,7 @@ h3, .h3 {
             padding: 5px 10px;
             border: 1px solid rgba(0, 0, 0, 0.2);
             border-radius: 4px;
+            font-size: 12px;
         }
         .grade-color {
             width: 10px;
@@ -696,6 +712,7 @@ h3, .h3 {
 }
 
 .filter {
+    margin-top: 30px;
     background-color: #fff;
     padding: 20px;
     border-radius: 6px;
@@ -705,7 +722,7 @@ h3, .h3 {
     align-items: center;
     select {
         border: 1px solid rgba(0, 0, 0, 0.2);
-        padding: 15px 20px;
+        padding: 10px 20px;
         border-radius: 4px;
     }
 }
@@ -947,4 +964,151 @@ div.ReactTags__suggestions li mark {
 div.ReactTags__suggestions ul li.ReactTags__activeSuggestion {
     background: #b7cfe0;
     cursor: pointer;
+}
+
+.all-questions {
+    &__wrapper {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 30px;
+        margin-top: 30px;
+        .question-card, .skeleton {
+            width: calc(33% - 20px);
+        }
+
+    }
+}
+
+.question-card {
+    background-color: #fff;
+    border-radius: 6px;
+    .title-q {
+        font-size: 30px;
+        line-height: 40px;
+    }
+    &__title {
+        background-color: rgba($color: #0080ff80, $alpha: .5);
+        padding: 15px;
+        border-top-left-radius: 6px;
+        border-top-right-radius: 6px;
+        position: relative;
+        display: flex;
+        gap: 15px;
+        align-items: center;
+        font-size: 18px;
+    }
+    &__inner {
+        padding: 20px;
+    }
+    &__answers {
+        display: flex;
+        flex-direction: column;
+        // gap: 10px;
+    }
+    &__answer {
+        display: flex;
+        gap: 10px;
+        align-items: center;
+        padding: 15px 0;
+        border-bottom: 1px solid #ddd;
+        &:first-child {
+            padding-top: 0;
+        }
+        &.correct {
+            svg {
+                color: #40ba07;
+                width: 18px;
+                height: 18px;
+            }
+        }
+        svg {
+            width: 20px;
+            height: 20px;
+        }
+    }
+    &__tags {
+        display: flex;
+        gap: 10px;
+        color: var(--text-gray);
+        font-size: 12px;
+        margin-top: 20px;
+        span {
+            cursor: pointer;
+            transition: all .2s ease;
+            &:hover {
+                color: var(--primary-bg);
+            }
+        }
+    }
+    &__btns {
+        display: flex;
+        gap: 10px;
+        margin-top: 20px;
+        button {
+            height: 35px;
+            border-radius: 4px;
+        font-size: 14px;
+        }
+    }
+}
+
+.tags-wrapper {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 20px;
+    span {
+        cursor: pointer;
+        transition: all .2s ease;
+        color: var(--text-gray);
+        &:hover {
+            color: var(--primary-bg);
+        }
+        &.selected {
+            color: var(--primary-bg);
+        }
+    }
+}
+
+.account {
+    &__inner {
+        padding: 20px;
+    }
+    &__tabs {
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+        margin-top: 20px;
+        &-head {
+            display: flex;
+            gap: 20px;
+        }
+        &-content {
+            margin-top: 20px;
+        }
+    }
+    &__tab {
+        font-size: 20px;
+        cursor: pointer;
+        color: var(--text-gray);
+        transition: all .2s ease;
+        &:hover {
+            color: var(--primary-bg);
+        }
+        &.active {
+            color: var(--primary-bg);
+            border-bottom: 2px solid var(--primary-bg);
+        }
+    }
+    .question-card {
+       background-color: var(--secondary-bg);
+    }
+}
+
+.questions-wrap {
+    display: flex;
+    flex-wrap: wrap;
+    .question-card {
+        width: calc(33% - 12px);
+    }
 }

@@ -12,6 +12,7 @@ import { questionApi } from '../services/questonsApi';
 import authReducer from './slices/authSlice';
 import tagsReducer from './slices/tagsSlice';
 import questionsReducer from './slices/questionsSlice';
+import lessonsSlice from './slices/lessonsSlice';
 
 
 const store = configureStore({
@@ -29,6 +30,7 @@ const store = configureStore({
     authSlice: authReducer,
     tags: tagsReducer,
     questions: questionsReducer,
+    lessons: lessonsSlice,
 
   },
   middleware: (getDefaultMiddleware) =>

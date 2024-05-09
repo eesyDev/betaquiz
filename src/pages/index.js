@@ -7,3 +7,5 @@ export { default as Quizes } from './Quizes';
 export { default as SingleClass } from './SingleClass';
 export { default as CreateQuiz } from './CreateQuiz';
 export { default as SingleGroup } from './SingleGroup';
+export { default as Questions } from './Questions/Questions';
+export { default as Account } from './Account/Account'; 

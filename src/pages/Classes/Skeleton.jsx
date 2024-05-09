@@ -1,6 +1,5 @@
 import React from 'react';
-import { Skeleton } from '@mui/material';
-import { Stack } from '@mui/material';
+import { Skeleton, Stack } from '@mui/material';
 
 const ClassSkeleton = () => {
   return (

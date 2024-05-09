@@ -14,8 +14,6 @@ const Quizes = ({ isOpen }) => {
 
 	const { data: quizes } = useGetAllExistingQuizQuery();
 
-	console.log(quizes);
-
 	const subjects = [...new Set(quizesData.map((quiz) => quiz.subject))];
 	const grades = [...new Set(quizesData.map((quiz) => quiz.grade))];
 	const groups = [...new Set(quizesData.map((quiz) => quiz.group))];

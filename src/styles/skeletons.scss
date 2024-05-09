@@ -10,4 +10,11 @@
         padding: 10px 30px;
         align-items: center;
     }
+    &-row-sm {
+        display: flex;
+        justify-content: flex-start;
+        padding: 5px 10px;
+        align-items: center;
+        gap: 10px;
+    }
 }
