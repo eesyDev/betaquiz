@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { toast } from 'react-hot-toast';
 
 import { useGetAllExistingQuestionsQuery } from '../../services/questonsApi';
-import { Sidebar, Header, Footer, QuestionCard } from '../../components';
+import { Sidebar, Header, Footer, QuestionCard, Breadcrumbs } from '../../components';
 import QuestionCardSkeleton from './Skeleton';
 import { getFavorites, toggleFavorite as toggleFavoriteUtils, uniqueByTitle } from '../../utils/dateUtils';
 
@@ -48,6 +48,7 @@ const Questions = ({ isOpen }) => {
         <div className='container'>
           <Header/>
           <div className="inner">
+            <Breadcrumbs/>
             <h1 className='h1'>All questions</h1>
             <div className='tags-wrapper'>
                 {availableQuestions?.flatMap(question => question.tags).filter((v, i, a) => a.indexOf(v) === i).map(tag => (

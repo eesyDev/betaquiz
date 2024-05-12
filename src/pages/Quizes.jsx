@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { BsPencilSquare } from "react-icons/bs";
 import { Link } from 'react-router-dom';
 
-import { Header, Sidebar, QuizCard, Footer } from '../components';
+import { Header, Sidebar, QuizCard, Footer, Breadcrumbs } from '../components';
 import { quizesData } from '../data/data';
 import { useGetAllExistingQuizQuery } from '../services/questonsApi';
 
@@ -40,6 +40,7 @@ const Quizes = ({ isOpen }) => {
       <div className="container">
         <Header/>
         <div className="inner">
+			<Breadcrumbs/>
           <h1 className="h1">Квизы</h1>
 		  <div className="quizes__filter filter">
 		  	<select value={grade} onChange={(e) => setGrade(e.target.value)}>

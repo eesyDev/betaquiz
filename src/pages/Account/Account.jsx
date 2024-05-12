@@ -2,7 +2,7 @@ import React, { useState, useMemo } from 'react';
 import { useSelector } from 'react-redux';
 import { toast } from 'react-hot-toast';
 
-import { Header, Sidebar, Footer, Calendar, QuestionCard } from '../../components';
+import { Header, Sidebar, Footer, Calendar, QuestionCard, Breadcrumbs } from '../../components';
 import { useGetTeacherLessonsQuery } from '../../services/lessonsApi';
 import { getFavorites, toggleFavorite as toggleFavoriteUtils, uniqueByTitle } from '../../utils/dateUtils'; 
 import { useGetAllExistingQuestionsQuery } from '../../services/questonsApi';
@@ -52,6 +52,7 @@ const Account = ({ isOpen }) => {
 			<div className='container'>
 				<Header />
 				<div className="account__inner">
+					<Breadcrumbs />
 					<h1 className="h1">Личный кабинет</h1>
 					<div className="account__tabs layer">
 						<div className="account__tabs-head">

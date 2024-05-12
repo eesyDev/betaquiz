@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 
-import { Header, Sidebar, Footer } from '../components';
+import { Header, Sidebar, Footer, Breadcrumbs } from '../components';
 import { useGetGroupByIdQuery, useGetGroupStudentsQuery } from '../services/teacherGroupApi';
 
 
@@ -19,6 +19,7 @@ const SingleGroup = ({isOpen}) => {
       <div className="container">
         <Header/>
         <div className="inner">
+          <Breadcrumbs/>
           <h1 className="h1">{groupData?.items[0]?.name}</h1>
           <div className="layer">
             <h3 className="h3">Ученики</h3>

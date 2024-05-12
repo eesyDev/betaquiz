@@ -4,7 +4,7 @@ import { useSelector, useDispatch } from 'react-redux';
 
 import { useGetTeacherLessonsQuery } from '../../services/lessonsApi';
 import { useGetTeacherGroupsQuery } from '../../services/teacherGroupApi';
-import { Header, Sidebar, Calendar, Footer } from '../../components';
+import { Header, Sidebar, Calendar, Footer, Breadcrumbs } from '../../components';
 import ClassSkeleton from './Skeleton';
 import { formatDate, formatTimeRange } from '../../utils/dateUtils';
 import { setLessons } from '../../redux/slices/lessonsSlice';
@@ -58,6 +58,7 @@ const Classes = ({ isOpen, isCalendarOpen }) => {
             <div className='container'>
                 <Header />
                 <div className="inner">
+                    <Breadcrumbs />
                     <h1 className="h1">Уроки</h1>
                     {isCalendarOpen ? 
                         <Calendar scheduleData={events} /> :

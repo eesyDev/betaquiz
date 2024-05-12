@@ -26,7 +26,7 @@ body {
     margin: 0;
     padding: 0;
     background-color: #eef1f5;
-    font-size: 14px;
+    font-size: 13px;
 }
 
 a {
@@ -87,7 +87,7 @@ img, svg {
     height: 50px;
     border: none;
     outline: none;
-    font-size: 17px;
+    // font-size: 17px;
     border-radius: 4px;
     padding: 0 20px;
     transition: all .2s ease-in-out;
@@ -210,7 +210,7 @@ h3, .h3 {
 .content {
     display: flex;
     &.with-sidebar {
-        margin-left: 260px;
+        margin-left: 240px;
         &.m-less {
             margin-left: 70px;
         }
@@ -353,7 +353,7 @@ h3, .h3 {
 }
 
 .sidebar {
-    width: 260px;
+    width: 240px;
     padding: 20px 15px 50px;
     background-color: #fff;
     height: 100vh;
@@ -395,14 +395,14 @@ h3, .h3 {
             flex-direction: column;
             gap: 10px;
             a {
-                padding: 12px;
+                padding: 5px;
                 transition: all .2s ease-in-out;
                 border-radius: 4px;
                 display: flex;
                 align-items: center;
                 gap: 15px;
                 svg {
-                    font-size: 20px;
+                    font-size: 18px;
                     display: block;
                 }
                 &:hover {
@@ -988,7 +988,7 @@ div.ReactTags__suggestions ul li.ReactTags__activeSuggestion {
     }
     &__title {
         background-color: rgba($color: #0080ff80, $alpha: .5);
-        padding: 15px;
+        padding: 10px;
         border-top-left-radius: 6px;
         border-top-right-radius: 6px;
         position: relative;
@@ -998,7 +998,7 @@ div.ReactTags__suggestions ul li.ReactTags__activeSuggestion {
         font-size: 18px;
     }
     &__inner {
-        padding: 20px;
+        padding: 15px;
     }
     &__answers {
         display: flex;
@@ -1110,5 +1110,16 @@ div.ReactTags__suggestions ul li.ReactTags__activeSuggestion {
     flex-wrap: wrap;
     .question-card {
         width: calc(33% - 12px);
+    }
+}
+
+.breadcrumbs {
+    margin-bottom: 20px;
+    a {
+        color: var(--text-gray);
+        transition: all .2s ease;
+        &:hover {
+            color: var(--primary-bg);
+        }
     }
 }

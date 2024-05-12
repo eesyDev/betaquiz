@@ -10,7 +10,7 @@ import { MuiFileInput } from 'mui-file-input';
 import { useDispatch, useSelector } from 'react-redux';
 
 
-import { Header, Sidebar, Footer, AddQuestions } from '../components';
+import { Header, Sidebar, Footer, AddQuestions, Breadcrumbs } from '../components';
 import { useGetGroupNumberForLessonForQuizQuery, useCreateQuizMutation, useGetSubjectLessonForQuizQuery } from '../services/questonsApi';
 import { addClassNumber, clearAddedQuestions } from '../redux/slices/questionsSlice';
 
@@ -105,6 +105,7 @@ const CreateQuiz = ({ isOpen }) => {
         <div className="container">
             <Header/>
             <div className="inner">
+                <Breadcrumbs/>
                 <h1 className="h1">Создать квиз</h1>
                 <div className="create-quiz__form">
                     <form action="" onSubmit={handleSubmit(onSubmit)}>

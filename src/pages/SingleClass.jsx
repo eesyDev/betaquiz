@@ -3,7 +3,7 @@ import { IoMdInformationCircleOutline } from "react-icons/io";
 import { GrGroup } from "react-icons/gr";
 import { Link, useParams } from 'react-router-dom';
 
-import { Header, Sidebar, Footer } from '../components';
+import { Header, Sidebar, Footer, Breadcrumbs } from '../components';
 import { useGetSubjectByIdQuery } from '../services/lessonsApi';
 import { useGetTeacherGroupsQuery } from '../services/teacherGroupApi';
 import { useGetGroupStudentsQuery } from '../services/teacherGroupApi';
@@ -126,6 +126,7 @@ const SingleClass = ({isOpen}) => {
         <div className="container">
             <Header/>
             <div className="inner">
+				<Breadcrumbs/>
               	<h1 className='h1'>{`Урок ${classesWithGroups[0]?.groups[0]?.name ? classesWithGroups[0]?.groups[0]?.name : '-'}`}</h1>
 				<div className="single-class__info layer">
 					<div className="single-class__top">

@@ -12,3 +12,4 @@ export { default as SelectFromExistingQuestions } from './SelectFromExistingQues
 export { default as QuestionModal } from './QuestionModal';
 export { default as EditQuestionModal } from './EditQuestionModal';
 export { default as QuestionCard } from './QuestionCard';
+export { default as Breadcrumbs } from './Breadcrumbs'; 

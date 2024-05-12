@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Header, Sidebar, GroupCard, Footer } from '../components';
+import { Header, Sidebar, GroupCard, Footer, Breadcrumbs } from '../components';
 import { useGetTeacherGroupsQuery } from '../services/teacherGroupApi';
 
 
@@ -20,6 +20,7 @@ const Groups = ({isOpen}) => {
       <div className="container">
         <Header/>
         <div className="inner">
+        <Breadcrumbs />
           <h1 className="h1">Мои группы</h1>
           <div className="groups__wrapper">
             {
