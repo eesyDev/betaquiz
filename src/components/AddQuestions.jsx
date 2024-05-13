@@ -3,18 +3,15 @@ import TextField from '@mui/material/TextField';
 import { FormControlLabel, Button, Box, Checkbox } from '@mui/material';
 import { useForm } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
-import { HiOutlinePencilSquare } from "react-icons/hi2";
-import { RiDeleteBin2Line } from "react-icons/ri";
-import { FaRegEye } from "react-icons/fa";
 
 
-import { TagInput, SelectFromExistingQuestions, QuestionModal, EditQuestionModal, CreateQuestion } from '../components';
+import { TagInput, SelectFromExistingQuestions, QuestionModal, EditQuestionModal, CreateQuestion, QuestionItem } from '../components';
 import { useCreateQuestionMutation, useEditQuestionMutation, useGetAllExistingQuestionsQuery } from '../services/questonsApi';
 import { addQuestion, editQuestion, updateQuestion, removeQuestion } from '../redux/slices/questionsSlice';
 
 
 const AddQuestions = () => {
-    const [qForm, setQform] = useState('exs-question')
+    const [qForm, setQform] = useState('new-question')
     const [currentQuestion, setCurrentQuestion] = useState('');
     const [questionImage, setQuestionImage] = useState(null);
     const [currentAnswers, setCurrentAnswers] = useState([{ title: '', correct: false },
@@ -22,9 +19,10 @@ const AddQuestions = () => {
     { title: '', correct: false },
     { title: '', correct: false },
     ]);
-    const [isModalOpen, setIsModalOpen] = useState(false);
-    const [isModalEditOpen, setIsModalEditOpen] = useState(false);
-    const [selectedQuestion, setSelectedQuestion] = useState(null);
+
+    const [activeButton, setActiveButton] = useState('new-question');
+    const [toggleActive, setToggleActive] = useState(false);
+
     const [subject, setSubject] = useState(1);
 
     const [createQuestion] = useCreateQuestionMutation();
@@ -71,18 +69,6 @@ const AddQuestions = () => {
         }
     };
 
-    const handleRemoveQuestion = (question) => {
-        // Получение текущего массива из localStorage
-        const storedSelectedQuestions = JSON.parse(localStorage.getItem('selectedQuestions')) || [];
-
-        // // Фильтрация массива, чтобы удалить вопрос с определенным id
-        const updatedQuestions = storedSelectedQuestions.filter((storageQuestion) => storageQuestion !== question);
-
-        // // Сохранение обновленного массива обратно в localStorage
-        localStorage.setItem('selectedQuestions', JSON.stringify(updatedQuestions));
-        dispatch(removeQuestion(question));
-
-    }
 
     const handleCheckboxChange = (index) => {
         const newOptions = currentAnswers.map((answer, i) => ({
@@ -147,56 +133,19 @@ const AddQuestions = () => {
         setCurrentAnswers(['', '', '', '']);
         setQuestionImage(null);
     }
-
-    const handleOpenModal = (question) => {
-        setSelectedQuestion(question);
-        setIsModalOpen(true);
+    const handleButtonClick = (buttonKey) => {
+        setActiveButton(buttonKey);  // Обновляем состояние активной кнопки
+        setQform(buttonKey); 
+        setToggleActive(!toggleActive);
     };
-
-    const handleCloseModal = () => {
-        setSelectedQuestion(null);
-        setIsModalOpen(false);
-    };
-
-    const handleOpenEditModal = (question) => {
-        setSelectedQuestion(question);
-        setIsModalEditOpen(true);
-    };
-
-    const handleCloseEditModal = () => {
-        setSelectedQuestion(null);
-        setIsModalEditOpen(false);
-    };
-
-
 
     return (
         <div>
             <div className="added-questions">
                 {
                     addedQuestions && addedQuestions?.map((question, index) => (
-                        <div className="question-item" key={index}>
-                            {/* <div className="id">{question?.id}</div> */}
-                            <div className='question-item-title'>{question?.title}</div>
-                            <div className="question-item-bottom">
-                                <div className="question-item-bottom-left">
-                                    <button className='btn--rounded' onClick={() => handleOpenEditModal(question)}><HiOutlinePencilSquare /></button>
-                                    <button className='btn--rounded' onClick={() => handleRemoveQuestion(question.id)}><RiDeleteBin2Line /></button>
-                                </div>
-                                <a className='btn--transparent' onClick={() => handleOpenModal(question)}><FaRegEye /></a>
-                            </div>
-                        </div>
+                        <QuestionItem question={question} key={index} isDelete  isAuthor/>
                     ))
-                }
-                {
-                    isModalOpen && (
-                        <QuestionModal isModalOpen={isModalOpen} handleCloseModal={handleCloseModal} selectedQuestion={selectedQuestion} />
-                    )
-                }
-                {
-                    isModalEditOpen && (
-                        <EditQuestionModal isModalOpen={isModalEditOpen} handleCloseModal={handleCloseEditModal} selectedQuestion={selectedQuestion} />
-                    )
                 }
                 {editedQuestion && (
                     <div>
@@ -211,22 +160,30 @@ const AddQuestions = () => {
                     </div>
                 )}
             </div>
-            <div className="change-state__btns-wrap flex g-20">
-                <div className="btn btn--solid-violet" onClick={() => setQform('new-question')}>Добавить новый вопрос</div>
-                <div className="btn btn--outlined-violet" onClick={() => setQform('exs-question')}>Выбрать из существующих</div>
+            <div className={`change-state__btns-wrap flex g-20 switch-toggles ${toggleActive ? 'active' : ''}`}>
+                <div 
+                    className={`btn create-new ${activeButton === 'new-question' ? 'active' : ''}`}
+                    onClick={() => handleButtonClick('new-question')}
+                >
+                    Добавить новый вопрос
+                </div>
+                <div 
+                    className={`btn add-existing ${activeButton === 'exs-question' ? 'active' : ''}`}
+                    onClick={() => handleButtonClick('exs-question')}
+                >
+                    Выбрать из существующих
+                </div>
             </div>
 
             {
                 qForm === 'new-question' ? (
-                    <div className="new-queston">
-                        <CreateQuestion 
-                            currentQuestion={currentQuestion} 
-                            setCurrentQuestion={setCurrentQuestion} 
-                            currentAnswers={currentAnswers} 
-                            setCurrentAnswers={setCurrentAnswers} 
-                            handleCheckboxChange={handleCheckboxChange} 
-                            handleAddQuestion={handleAddQuestion}/>
-                    </div>
+                    <CreateQuestion 
+                        currentQuestion={currentQuestion} 
+                        setCurrentQuestion={setCurrentQuestion} 
+                        currentAnswers={currentAnswers} 
+                        setCurrentAnswers={setCurrentAnswers} 
+                        handleCheckboxChange={handleCheckboxChange} 
+                        handleAddQuestion={handleAddQuestion}/>
                     
                 ) : <SelectFromExistingQuestions />
             }

@@ -169,22 +169,7 @@ const CreateQuiz = ({ isOpen }) => {
                                 <Option value='45'>45 мин</Option>
                                 <Option value='60'>60 мин</Option>
                             </Select>
-                            {/* <Select
-                                color="primary"
-                                placeholder="Выберите класс"
-                                size="md"
-                                variant="outlined"
-                                sx={{width: "20%"}}
-                                defaultValue={1}
-                                name="classNum"
-                                onChange={(e) => handleChange}
-                            >
-                                {
-                                    classes?.map((item) => (
-                                        <MenuItem value={item?.id} key={item?.number}>{item.number}</MenuItem>
-                                    ))
-                                }
-                            </Select> */}
+                            
                             <select style={{width: "20%"}} onChange={(e) => handleChange(e)}>
                                     <option  default>Выберите класс</option>
                                     

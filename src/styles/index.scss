@@ -145,7 +145,7 @@ img, svg {
 }
 
 .btn--rounded {
-    background-color: var(--violet);
+    background-color: var(--text-gray);
     color: #fff;
     width: 40px;
     height: 40px;
@@ -170,7 +170,7 @@ img, svg {
     justify-content: center;
     align-items: center;
     cursor: pointer;
-    color: var(--violet);
+    color: var(--text-gray);
     border: none;
     font-size: 20px;
     transition: all .2s ease-in;
@@ -686,6 +686,8 @@ h3, .h3 {
             gap: 20px;
             input {
                 background-color: #fff;
+                height: 50px;
+                box-sizing: border-box;
             }
         }
         &-row {
@@ -699,8 +701,19 @@ h3, .h3 {
     .option-variant-item {
         display: flex;
         margin-bottom: 20px;
-        gap: 20px;
+        gap: 10px;
         justify-content: space-between;
+        > div {
+            width: 73%;
+        }
+        > label >span {
+            font-size: 12px;
+            color: #9E9E9E;
+            margin-right: 0;
+        }
+        > label {
+            margin-right: 0;
+        }
     }
 }
 
@@ -759,35 +772,40 @@ h3, .h3 {
     margin-top: 20px;
     flex-wrap: wrap;
     counter-reset: item;
-    .question-item {
-        background-color: #fff;
-        padding: 20px;
-        border-radius: 4px;
-        width: calc(25% - 15px);
-        text-align: left;
-        position: relative;
-        padding-top: 40px;
+    
+}
+.question-item {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 4px;
+    // width: calc(25% - 15px);
+    margin-bottom: 20px;
+    text-align: left;
+    position: relative;
+    // padding-top: 40px;
+    display: flex;
+    justify-content: space-between;
+    flex-direction: column;
+    // &:before {
+    //     content: counter(item) ".";
+    //     counter-increment: item;
+    //     position: absolute;
+    //     top: 10px;
+    // }
+    .num {
+        margin-bottom: 10px;
+    }
+    &-title {
+        font-size: 20px;
+        font-weight: 600;
+    }
+    &-bottom {
         display: flex;
         justify-content: space-between;
-        flex-direction: column;
-        &:before {
-            content: counter(item) ".";
-            counter-increment: item;
-            position: absolute;
-            top: 10px;
-        }
-        &-title {
-            font-size: 25px;
-            font-weight: 600;
-        }
-        &-bottom {
+        margin-top: 20px;
+        &-left {
             display: flex;
-            justify-content: space-between;
-            margin-top: 20px;
-            &-left {
-                display: flex;
-                gap: 10px;
-            }
+            gap: 10px;
         }
     }
 }
@@ -876,6 +894,9 @@ h3, .h3 {
 
 .new-queston {
     margin-top: 30px;
+    max-width: 425px;
+    margin-left: auto;
+    margin-right: auto;
     h3 {
         text-align: center;
         margin-bottom: 30px;
@@ -887,7 +908,7 @@ h3, .h3 {
         margin-bottom: 20px;
         h4 {
             margin: 0;
-            font-size: 18px;
+            font-size: 14px;
         }
     }
 }
@@ -1130,3 +1151,84 @@ div.ReactTags__suggestions ul li.ReactTags__activeSuggestion {
         margin-bottom: 20px;
     }
 }
+
+.available-questions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    flex-direction: row;
+}
+
+.checkbox-item {
+    justify-content: start;
+    width: fit-content !important;
+}
+
+.question-item {
+    .btn {
+        height: 35px;
+    }
+}
+
+.switch-toggles {
+        position: relative;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        width: 650px;
+        height: 50px;
+        border: 1px solid rgba(38, 39, 45, 0.2);
+        border-radius: 30px;            
+        padding: 0 25px 0;
+        box-sizing: border-box;
+        margin-left: auto;
+        margin-right: auto;
+        .create-new {
+            position: relative;
+            width: 50%;
+            color: #8c8f94;
+            font-size: 16px;
+            cursor: pointer;
+            text-align: left;
+            transition: color 0.7s cubic-bezier(0.545, 0, 0.05, 1);
+        }
+        .add-existing {
+            position: relative;
+            width: 50%;
+            color: #8c8f94;
+            font-size: 16px;
+            cursor: pointer;
+            text-align: right;
+            transition: color 0.7s cubic-bezier(0.545, 0, 0.05, 1);
+        }
+        &:after {
+            position: absolute;
+            content: "";
+            width: 50%;
+            height: 42px;
+            background: var(--primary-bg);
+            left: 3px;
+            top: 3px;
+            border-radius: 30px;
+            transition: 0.7s;
+        }
+        &.active:after {
+            top: 3px;
+            left: 321px;
+        }
+        .btn {
+            position: relative;
+            z-index: 2;
+            &.active {
+                color: #fff;
+            }
+        }
+    }
+
+    .questions {
+        margin-top: 30px;
+        h3 {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+    }

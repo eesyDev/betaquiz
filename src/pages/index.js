@@ -10,3 +10,4 @@ export { default as SingleGroup } from './SingleGroup';
 export { default as Questions } from './Questions/Questions';
 export { default as Account } from './Account/Account'; 
 export { default as SingleStudent } from './SingleStudent';
+export { default as CreateQuestionPage } from './CreateQuestionPage';

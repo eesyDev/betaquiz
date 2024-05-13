@@ -15,3 +15,4 @@ export { default as QuestionCard } from './QuestionCard';
 export { default as Breadcrumbs } from './Breadcrumbs'; 
 export { default as CreateQuestion } from './CreateQuestion';
 export { default as MasonryLayout } from './MasonryLayout';
+export { default as QuestionItem } from './QuestionItem';

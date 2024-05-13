@@ -1,9 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { FormControl, FormGroup, FormControlLabel, Checkbox, Button } from '@mui/material';
+import Masonry from 'react-masonry-css';
+
 import { useGetAllExistingQuestionsQuery } from '../services/questonsApi';
 
 import { addQuestion, editQuestion, updateQuestion, removeQuestion } from '../redux/slices/questionsSlice';
+import QuestionItem from './QuestionItem';
 
 
 const SelectFromExistingQuestions = ({ onSelect }) => {
@@ -24,7 +27,6 @@ const SelectFromExistingQuestions = ({ onSelect }) => {
   };
 
   const handleAddQuestions = () => {
-    // существующие выбранные вопросы из локального хранилища
     const existingSelectedQuestions = JSON.parse(localStorage.getItem('selectedQuestions')) || [];
 
     // Фильтруем новые выбранные вопросы, чтобы убрать уже существующие
@@ -44,26 +46,28 @@ const SelectFromExistingQuestions = ({ onSelect }) => {
     setSelectedQuestions([]);
   };
 
+  const breackpointColumnsObj = {
+    default: 4,
+  }
+
   return (
-    <FormControl fullWidth>
-      <FormGroup>
-        {availableQuestions?.map((question) => (
-          <FormControlLabel
-            key={question.id}
-            control={
-              <Checkbox
-                checked={selectedQuestions.includes(question.id)}
-                onChange={() => handleCheckboxChange(question)}
-              />
-            }
-            label={question.title}
-          />
-        ))}
-      </FormGroup>
-      <Button variant="contained" color="primary" onClick={handleAddQuestions}>
-        Добавить выбранные вопросы
-      </Button>
-    </FormControl>
+    <div className="questions">
+        <h3 className="h3">Выбрать вопросы из существующих</h3>
+        <div className='available-questions'>
+        <Masonry 
+            className='flex animate-slide-fwd masonry-layout'
+            breakpointCols={breackpointColumnsObj}>
+            {availableQuestions?.map((question, index) => (
+            <QuestionItem question={question} key={index} isCheckbox={true} handleCheckboxChange={handleCheckboxChange} selectedQuestions={selectedQuestions}/>
+          ))}
+          </Masonry>
+          
+          <Button variant="contained" color="primary" onClick={handleAddQuestions}>
+          Добавить выбранные вопросы
+          </Button>
+        </div>
+    </div>
+    
   );
 };
 

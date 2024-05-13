@@ -60,11 +60,11 @@ const CreateQuestion = ({ currentQuestion, setCurrentQuestion, questionImage, se
                             control={<Checkbox
                                 checked={currentAnswers[index].correct}
                                 color="success"
-                                sx={{ fontSize: "14px" }}
+                                sx={{ fontSize: "12px" }}
                                 onChange={() => handleCheckboxChange(index)}
                             />}
-                            label={`Правильный ответ`}
-                            sx={{ width: "25%" }}
+                            label={`Правильный`}
+                            sx={{ width: "30%" }}
                         />
                     </div>
                 ))}
