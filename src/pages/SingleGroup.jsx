@@ -26,7 +26,7 @@ const SingleGroup = ({isOpen}) => {
             <div className="single-group__students-list">
               {
                 studentsData?.map((student) => (
-                  <div className='single-group__students-list-item'>{student.name}</div>
+                  <div><Link to={`/students/student/${student?.student_id}`} className='single-group__students-list-item'>{student.name}</Link></div>
                 ))
               }
             </div>

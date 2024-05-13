@@ -13,3 +13,5 @@ export { default as QuestionModal } from './QuestionModal';
 export { default as EditQuestionModal } from './EditQuestionModal';
 export { default as QuestionCard } from './QuestionCard';
 export { default as Breadcrumbs } from './Breadcrumbs'; 
+export { default as CreateQuestion } from './CreateQuestion';
+export { default as MasonryLayout } from './MasonryLayout';

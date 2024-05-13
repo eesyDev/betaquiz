@@ -66,9 +66,9 @@ img, svg {
 
 .flex {
     display: flex;
-    * {
-        flex: 1
-    }
+    // * {
+    //     flex: 1
+    // }
 }
 .w-50 {
     width: 50%;
@@ -972,7 +972,7 @@ div.ReactTags__suggestions ul li.ReactTags__activeSuggestion {
         flex-wrap: wrap;
         gap: 30px;
         margin-top: 30px;
-        .question-card, .skeleton {
+        .skeleton {
             width: calc(33% - 20px);
         }
 
@@ -1121,5 +1121,12 @@ div.ReactTags__suggestions ul li.ReactTags__activeSuggestion {
         &:hover {
             color: var(--primary-bg);
         }
+    }
+}
+
+.masonry-layout {
+    gap: 20px;
+    .question-card {
+        margin-bottom: 20px;
     }
 }

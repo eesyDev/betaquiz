@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { toast } from 'react-hot-toast';
 
 import { useGetAllExistingQuestionsQuery } from '../../services/questonsApi';
-import { Sidebar, Header, Footer, QuestionCard, Breadcrumbs } from '../../components';
+import { Sidebar, Header, Footer, QuestionCard, Breadcrumbs, MasonryLayout } from '../../components';
 import QuestionCardSkeleton from './Skeleton';
 import { getFavorites, toggleFavorite as toggleFavoriteUtils, uniqueByTitle } from '../../utils/dateUtils';
 
@@ -35,11 +35,10 @@ const Questions = ({ isOpen }) => {
 
     const questions = uniqueByTitle(availableQuestions);
 
-    const filteredQuestions = questions?.filter(question =>
+    const filteredQuestions = availableQuestions?.filter(question =>
         selectedTags.length === 0 || question.tags.some(tag => selectedTags.includes(tag))
     );
-
-    console.log(filteredQuestions)
+console.log(availableQuestions)
     // if (error) return <p>Error loading questions!</p>;
     // if (!availableQuestions?.length) return <p>No questions available.</p>;
   return (
@@ -59,15 +58,12 @@ const Questions = ({ isOpen }) => {
                 <button onClick={clearTags} className={selectedTags?.length === 0? 'hidden clear-tag' : 'clear-tag'}>Очистить теги</button>
             </div>
             <div className="all-questions__wrapper">
-            { isLoading ? [...Array(4)].map((_, index) => <QuestionCardSkeleton key={index} />): filteredQuestions?.map((question) => (
-                <QuestionCard 
-                key={question.id} 
-                question={question} 
+            { isLoading ? [...Array(4)].map((_, index) => <QuestionCardSkeleton key={index} />) : 
+            <MasonryLayout cards={filteredQuestions} 
                 onTagClick={handleTagChange} 
-                toggleFavorite={() => toggleFavorite(question)}
-				isFavorite={favorites.includes(question.id)}/>
-            )
-            )}
+                toggleFavorite={toggleFavorite}
+				        favorites={favorites}/>
+            }
           </div>
           </div>
           <Footer/>
